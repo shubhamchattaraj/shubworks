@@ -1,0 +1,2048 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="description"
+      content="Browse the complete SHUBWORKS literary archive."
+    />
+
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="SHUBWORKS">
+
+    <link rel="canonical" href="https://shubworks.netlify.app/archive.html">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Archive — SHUBWORKS">
+    <meta property="og:description" content="Explore the complete SHUBWORKS literary archive of poems, stories, fables and novels.">
+    <meta property="og:url" content="https://shubworks.netlify.app/archive.html">
+    <meta property="og:site_name" content="SHUBWORKS">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Archive — SHUBWORKS">
+    <meta name="twitter:description" content="Explore the complete SHUBWORKS literary archive of poems, stories, fables and novels.">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "SHUBWORKS Literary Archive",
+        "url": "https://shubworks.netlify.app/archive.html",
+        "description": "Explore the complete SHUBWORKS literary archive of poems, stories, fables and novels."
+    }
+    </script>
+
+    <meta name="theme-color" content="#ffffff" />
+    <title>Archive — SHUBWORKS</title>
+
+    <!-- =====================================================
+         FONTS
+         ===================================================== -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=League+Spartan:wght@400;500;600;700&family=Nunito:wght@400;500;600;700&family=Open+Sans:wght@400;500;600;700&family=Sanchez:ital@0;1&family=Satisfy&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- =====================================================
+         GLOBAL STYLES
+         ===================================================== -->
+
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+      /* ============================================================
+   SHUBWORKS — ARCHIVE / PEACH + BLACK + BURGUNDY EDITORIAL LAYER
+   Archive-only styling. Markup, API and archive JavaScript remain intact.
+   ============================================================ */
+
+      .archive-page {
+        --archive-peach: #f7efe7;
+        --archive-surface: #fffaf4;
+        --archive-soft: #eee1d5;
+        --archive-ink: #11100f;
+        --archive-burgundy: #6b2433;
+        --archive-burgundy-dark: #4a1723;
+        --archive-muted: #746963;
+        --archive-line: rgba(17, 16, 15, 0.14);
+        --archive-line-strong: rgba(17, 16, 15, 0.34);
+        background: var(--archive-peach);
+        color: var(--archive-ink);
+      }
+
+      /* ---------- HERO ---------- */
+      .archive-hero {
+        position: relative;
+        overflow: hidden;
+        padding-bottom: 42px;
+        background:
+          radial-gradient(
+            circle at 84% 22%,
+            rgba(107, 36, 51, 0.08),
+            transparent 25%
+          ),
+          var(--archive-peach);
+      }
+
+      .archive-hero::before {
+        content: "";
+        position: absolute;
+        width: clamp(180px, 22vw, 340px);
+        height: clamp(180px, 22vw, 340px);
+        right: -8vw;
+        top: 18%;
+        border: 1px solid rgba(107, 36, 51, 0.15);
+        border-radius: 50%;
+        pointer-events: none;
+        animation: archiveOrbit 14s linear infinite;
+      }
+
+      .archive-hero::after {
+        content: "";
+        position: absolute;
+        left: var(--pad);
+        right: var(--pad);
+        bottom: 0;
+        height: 1px;
+        background: var(--archive-line-strong);
+        transform-origin: left;
+        animation: archiveRuleIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+
+      .archive-hero-top,
+      .archive-hero-bottom {
+        color: var(--archive-muted);
+      }
+
+      .archive-kicker span:first-child {
+        color: var(--archive-burgundy);
+        font-family: var(--heading);
+        font-weight: 700;
+      }
+
+      .archive-hero-status {
+        color: var(--archive-burgundy);
+      }
+
+      .archive-hero-status .status-dot {
+        background: var(--archive-burgundy);
+        box-shadow: 0 0 0 5px rgba(107, 36, 51, 0.09);
+      }
+
+      .archive-title-wrap {
+        position: relative;
+        z-index: 1;
+      }
+
+      .archive-title-small {
+        color: var(--archive-burgundy);
+        font-family: var(--heading);
+        font-weight: 600;
+        letter-spacing: 0.14em;
+      }
+
+      .archive-title-wrap h1 {
+        position: relative;
+        letter-spacing: -0.075em;
+        color: var(--archive-ink);
+      }
+
+      .archive-title-wrap h1::after {
+        content: "the complete collection";
+        position: absolute;
+        left: 2px;
+        bottom: -0.22em;
+        font: 400 clamp(19px, 2.5vw, 34px)/1 var(--script);
+        letter-spacing: 0;
+        text-transform: none;
+        color: var(--archive-burgundy);
+        transform: rotate(-4deg);
+      }
+
+      .archive-title-wrap h1 span {
+        color: var(--archive-burgundy);
+      }
+
+      .archive-introduction {
+        border-left: 2px solid var(--archive-burgundy);
+        padding: 5px 0 5px 24px;
+        color: var(--archive-ink-2);
+      }
+
+      .archive-introduction p {
+        font-family: var(--sans);
+        font-size: 15px;
+        line-height: 1.85;
+      }
+
+      .archive-introduction-meta {
+        border-color: var(--archive-line);
+      }
+
+      .archive-introduction-meta strong {
+        color: var(--archive-burgundy);
+        font-family: var(--heading);
+      }
+
+      .archive-hero-bottom {
+        border-color: var(--archive-line);
+        font-family: var(--heading);
+        font-weight: 500;
+      }
+
+      .archive-hero-bottom span:nth-child(2) {
+        color: var(--archive-burgundy);
+      }
+
+      /* ---------- SUMMARY PANELS ---------- */
+      .archive-summary {
+        background: var(--archive-soft);
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+
+      .archive-summary-inner {
+        gap: 1px;
+        background: var(--archive-line-strong);
+        border: 1px solid var(--archive-line-strong);
+        box-shadow: 0 10px 30px rgba(74, 23, 35, 0.05);
+      }
+
+      .archive-summary-item,
+      .archive-summary-message {
+        background: var(--archive-surface);
+        border-color: var(--archive-line);
+      }
+
+      .archive-summary-item {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .archive-summary-item::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 3px;
+        background: var(--archive-burgundy);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.45s var(--ease);
+      }
+
+      .archive-summary-item:hover::before {
+        transform: scaleX(1);
+      }
+
+      .archive-summary-item span {
+        font-family: var(--heading);
+        font-weight: 600;
+        color: var(--archive-muted);
+      }
+
+      .archive-summary-item strong {
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: clamp(31px, 3.3vw, 49px);
+        color: var(--archive-ink);
+      }
+
+      .archive-summary-message {
+        color: var(--archive-burgundy);
+        font-family: var(--script);
+        font-size: 18px;
+        letter-spacing: 0;
+      }
+
+      /* ---------- CONTROLS ---------- */
+      .archive-controls {
+        background: var(--archive-peach);
+        border-color: var(--archive-line);
+      }
+
+      .archive-controls-inner {
+        position: relative;
+        overflow: hidden;
+        background: var(--archive-surface);
+        border: 1px solid var(--archive-line-strong);
+        padding: 22px;
+        box-shadow: 8px 8px 0 rgba(74, 23, 35, 0.07);
+      }
+
+      .archive-controls-inner::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          var(--archive-burgundy),
+          var(--archive-peach),
+          var(--archive-burgundy)
+        );
+      }
+
+      .control-label,
+      .search-label {
+        font-family: var(--heading);
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        color: var(--archive-burgundy);
+      }
+
+      .archive-filters {
+        gap: 8px;
+      }
+
+      .filter-btn {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--archive-line-strong);
+        background: var(--archive-peach);
+        color: var(--archive-ink);
+        font-family: var(--heading);
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        transition:
+          color 0.3s ease,
+          border-color 0.3s ease,
+          transform 0.35s var(--ease),
+          background-color 0.3s ease;
+      }
+
+      .filter-btn::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--archive-burgundy);
+        transform: translateY(101%);
+        transition: transform 0.38s var(--ease);
+        z-index: -1;
+      }
+
+      .filter-btn:hover {
+        color: #fffaf4;
+        border-color: var(--archive-burgundy);
+        transform: translateY(-2px);
+      }
+
+      .filter-btn:hover::before,
+      .filter-btn.active::before {
+        transform: translateY(0);
+      }
+
+      .filter-btn.active {
+        background: var(--archive-burgundy);
+        color: #fffaf4;
+        border-color: var(--archive-burgundy);
+      }
+
+      .archive-search {
+        border-top: 1px solid var(--archive-line);
+      }
+
+      .archive-search input {
+        font-family: var(--sans);
+        color: var(--archive-ink);
+        border-color: var(--archive-line-strong);
+      }
+
+      .archive-search input:focus {
+        border-color: var(--archive-burgundy);
+        box-shadow: 0 2px 0 var(--archive-burgundy);
+      }
+
+      .archive-search input::placeholder {
+        color: #9b8b83;
+      }
+
+      .archive-search-icon {
+        color: var(--archive-burgundy);
+        font-family: var(--heading);
+      }
+
+      /* ---------- COLLECTION HEADER ---------- */
+      .collection-heading {
+        background: var(--archive-peach);
+        opacity: 1;
+      }
+
+      .collection-heading-inner {
+        padding-bottom: 10px;
+        color: var(--archive-muted);
+        font-family: var(--heading);
+        font-weight: 500;
+      }
+
+      /* ---------- WORK CARDS ---------- */
+      .archive-grid {
+        background: var(--archive-peach);
+      }
+
+      .archive-card {
+        position: relative;
+        isolation: isolate;
+        background: var(--archive-surface);
+        border-color: var(--archive-line);
+        box-shadow: 0 5px 0 rgba(74, 23, 35, 0.035);
+        transition:
+          color 0.4s ease,
+          background-color 0.4s ease,
+          border-color 0.4s ease,
+          box-shadow 0.45s var(--ease),
+          transform 0.45s var(--ease),
+          padding 0.45s var(--ease);
+      }
+
+      .archive-card::before {
+        background: var(--archive-burgundy);
+        transform: scaleY(0);
+        transform-origin: bottom;
+        transition: transform 0.55s var(--ease);
+      }
+
+      .archive-card::after {
+        border-color: rgba(255, 250, 244, 0.18);
+      }
+
+      .archive-card:hover {
+        color: #fffaf4;
+        border-color: var(--archive-burgundy);
+        background: var(--archive-burgundy);
+        box-shadow: 12px 14px 0 rgba(74, 23, 35, 0.14);
+        transform: translateY(-3px);
+      }
+
+      .archive-card-number {
+        border-color: var(--archive-line-strong);
+        color: var(--archive-burgundy);
+        font-family: var(--heading);
+        font-weight: 600;
+      }
+
+      .archive-card-type {
+        border-color: var(--archive-line);
+        color: var(--archive-burgundy);
+        font-family: var(--heading);
+        font-weight: 600;
+      }
+
+      .archive-card-title {
+        font-family: var(--display);
+        font-weight: 400;
+        letter-spacing: -0.025em;
+        color: inherit;
+      }
+
+      .archive-card-description {
+        font-family: var(--sans);
+        color: var(--archive-muted);
+      }
+
+      .archive-card:hover .archive-card-description {
+        color: #f5ded4;
+      }
+
+      .archive-card-meta {
+        border-color: var(--archive-line);
+        color: var(--archive-muted);
+        font-family: var(--mono);
+      }
+
+      .archive-card:hover .archive-card-meta {
+        color: #f0d9d0;
+        border-color: rgba(255, 250, 244, 0.22);
+      }
+
+      .archive-card-arrow {
+        border-color: var(--archive-line-strong);
+        color: var(--archive-burgundy);
+        font-family: var(--heading);
+      }
+
+      .archive-card:hover .archive-card-arrow {
+        color: #fffaf4;
+        border-color: rgba(255, 250, 244, 0.3);
+        background: rgba(255, 250, 244, 0.08);
+      }
+
+      .archive-card[data-type="poem"] .archive-card-type {
+        border-radius: 999px;
+      }
+
+      .archive-card[data-type="story"] .archive-card-type {
+        text-decoration: none;
+        background: rgba(107, 36, 51, 0.045);
+      }
+
+      .archive-card[data-type="fable"] .archive-card-type {
+        border-style: dashed;
+      }
+
+      .archive-card[data-type="novel"] .archive-card-type {
+        background: var(--archive-burgundy);
+        color: #fffaf4;
+        border-color: var(--archive-burgundy);
+      }
+
+      .archive-card:hover .archive-card-type,
+      .archive-card:hover .archive-card[data-type="novel"] .archive-card-type {
+        color: #fffaf4;
+        border-color: rgba(255, 250, 244, 0.32);
+        background: rgba(255, 250, 244, 0.08);
+      }
+
+      /* ---------- LOADING / EMPTY ---------- */
+      .archive-state {
+        background: var(--archive-surface);
+        border-color: var(--archive-line-strong);
+      }
+
+      .archive-state-mark {
+        border-color: var(--archive-line-strong);
+        color: var(--archive-burgundy);
+        font-family: var(--heading);
+      }
+
+      .archive-state-title {
+        font-family: var(--display);
+        font-weight: 400;
+      }
+
+      .archive-state-text {
+        color: var(--archive-muted);
+        font-family: var(--heading);
+      }
+
+      /* ---------- END PANEL ---------- */
+      .archive-end {
+        background: var(--archive-burgundy-dark);
+      }
+
+      .archive-end-inner {
+        position: relative;
+        overflow: hidden;
+        background: var(--archive-burgundy);
+        border-color: rgba(255, 250, 244, 0.2);
+        box-shadow: 10px 10px 0 rgba(17, 16, 15, 0.14);
+      }
+
+      .archive-end-inner::before {
+        content: "";
+        position: absolute;
+        width: 280px;
+        height: 280px;
+        right: -90px;
+        top: -140px;
+        border: 1px solid rgba(255, 250, 244, 0.16);
+        border-radius: 50%;
+      }
+
+      .archive-end-number,
+      .archive-end-content > span {
+        color: #e8c7bd;
+      }
+
+      .archive-end-content h2 {
+        font-family: var(--display);
+        font-weight: 400;
+      }
+
+      .archive-end-content em {
+        color: var(--peach);
+        font-family: var(--script);
+        letter-spacing: 0;
+      }
+
+      .archive-end-content p {
+        color: #f0d9d0;
+        font-family: var(--sans);
+      }
+
+      .archive-end-link {
+        position: relative;
+        z-index: 1;
+        color: #fffaf4;
+        border-color: rgba(255, 250, 244, 0.55);
+        font-family: var(--heading);
+      }
+
+      .archive-end-link:hover {
+        background: #fffaf4;
+        color: var(--archive-burgundy-dark);
+      }
+
+      /* ---------- MOTION ---------- */
+      @media (prefers-reduced-motion: no-preference) {
+        .archive-hero-inner {
+          animation: archiveHeroIn 0.9s var(--ease) both;
+        }
+
+        .archive-summary-inner,
+        .archive-controls-inner {
+          animation: archivePanelIn 0.75s 0.12s var(--ease) both;
+        }
+
+        .archive-card {
+          animation: archiveCardIn 0.65s var(--ease) both;
+        }
+
+        .archive-card:nth-child(1) {
+          animation-delay: 0.02s;
+        }
+        .archive-card:nth-child(2) {
+          animation-delay: 0.05s;
+        }
+        .archive-card:nth-child(3) {
+          animation-delay: 0.08s;
+        }
+        .archive-card:nth-child(4) {
+          animation-delay: 0.11s;
+        }
+        .archive-card:nth-child(5) {
+          animation-delay: 0.14s;
+        }
+        .archive-card:nth-child(6) {
+          animation-delay: 0.17s;
+        }
+        .archive-card:nth-child(7) {
+          animation-delay: 0.2s;
+        }
+        .archive-card:nth-child(8) {
+          animation-delay: 0.23s;
+        }
+        .archive-card:nth-child(9) {
+          animation-delay: 0.26s;
+        }
+      }
+
+      @keyframes archiveHeroIn {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes archivePanelIn {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes archiveCardIn {
+        from {
+          opacity: 0;
+          transform: translateY(22px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes archiveRuleIn {
+        from {
+          transform: scaleX(0);
+        }
+        to {
+          transform: scaleX(1);
+        }
+      }
+
+      @keyframes archiveOrbit {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ---------- RESPONSIVE ---------- */
+      @media (max-width: 1000px) {
+        .archive-summary-inner {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .archive-summary-message {
+          min-height: 90px;
+        }
+
+        .archive-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 800px) {
+        .archive-filter-area {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 13px;
+        }
+
+        .archive-grid {
+          gap: 11px;
+          padding-top: 20px;
+        }
+
+        .archive-card {
+          min-height: 285px;
+        }
+
+        .archive-card[data-type="novel"] {
+          min-height: 310px;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .archive-hero::before {
+          display: none;
+        }
+
+        .archive-summary-inner {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .archive-summary-message {
+          grid-column: 1 / -1;
+          min-height: 76px;
+        }
+
+        .archive-controls-inner {
+          padding: 13px;
+          box-shadow: 5px 5px 0 rgba(74, 23, 35, 0.07);
+        }
+
+        .archive-filters {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          width: 100%;
+        }
+
+        .filter-btn {
+          padding: 11px 8px;
+        }
+
+        .archive-search {
+          grid-template-columns: 1fr auto;
+        }
+
+        .archive-search .search-label {
+          grid-column: 1 / -1;
+        }
+
+        .archive-grid {
+          grid-template-columns: 1fr;
+          padding-left: var(--pad);
+          padding-right: var(--pad);
+        }
+
+        .archive-card,
+        .archive-card[data-type="novel"] {
+          min-height: 290px;
+        }
+
+        .archive-card-title {
+          max-width: 16ch;
+          font-size: 34px;
+        }
+
+        .archive-title-wrap h1::after {
+          bottom: -0.3em;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .archive-card,
+        .archive-summary-inner,
+        .archive-controls-inner,
+        .archive-hero-inner,
+        .archive-hero::after,
+        .archive-hero::before {
+          animation: none !important;
+        }
+      }
+
+      /* ==========================================================
+         ENHANCED ARCHIVE CONTROLS / ACCESSIBILITY / VIEWS
+         ========================================================== */
+      .archive-enhanced-tools {
+        display: grid;
+        gap: 18px;
+        margin-top: 18px;
+        padding-top: 18px;
+        border-top: 1px solid var(--archive-line);
+      }
+
+      .archive-tool-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: end;
+        gap: 12px;
+      }
+
+      .archive-tool-group {
+        display: grid;
+        gap: 7px;
+        min-width: 170px;
+      }
+
+      .archive-tool-group.wide {
+        flex: 1 1 260px;
+      }
+
+      .archive-tool-label {
+        font: 600 0.72rem/1.2 var(--heading);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--archive-muted);
+      }
+
+      .archive-select,
+      .archive-action-btn {
+        min-height: 44px;
+        border: 1px solid var(--archive-line-strong);
+        background: var(--archive-peach);
+        color: var(--archive-ink);
+        font: 600 0.82rem/1.1 var(--heading);
+        letter-spacing: 0.04em;
+      }
+
+      .archive-select {
+        width: 100%;
+        padding: 0 40px 0 13px;
+        border-radius: 0;
+      }
+
+      .archive-action-btn {
+        padding: 0 15px;
+        cursor: pointer;
+        transition:
+          transform 0.25s var(--ease),
+          background-color 0.25s ease,
+          color 0.25s ease,
+          border-color 0.25s ease;
+      }
+
+      .archive-action-btn:hover,
+      .archive-action-btn:focus-visible {
+        transform: translateY(-2px);
+        background: var(--archive-burgundy);
+        border-color: var(--archive-burgundy);
+        color: #fffaf4;
+      }
+
+      .archive-action-btn[aria-pressed="true"] {
+        background: var(--archive-burgundy);
+        border-color: var(--archive-burgundy);
+        color: #fffaf4;
+      }
+
+      .archive-results-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin: 0 auto;
+        padding: 13px 0 4px;
+        color: var(--archive-muted);
+        font: 600 0.76rem/1.3 var(--heading);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .archive-result-count {
+        color: var(--archive-burgundy);
+      }
+
+      .archive-filter-summary {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+        min-height: 1px;
+      }
+
+      .archive-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 6px 9px;
+        border: 1px solid var(--archive-line);
+        background: var(--archive-soft);
+        color: var(--archive-ink);
+        font: 600 0.7rem/1 var(--heading);
+        letter-spacing: 0.04em;
+      }
+
+      .archive-grid[data-view="grid"] {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        align-items: stretch;
+      }
+
+      .archive-grid[data-view="grid"] .archive-card-wrap {
+        min-width: 0;
+      }
+
+      .archive-grid[data-view="grid"] .archive-card {
+        min-height: 100%;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 14px;
+        align-items: start;
+      }
+
+      .archive-card-wrap {
+        position: relative;
+        display: block;
+      }
+
+      .archive-card-bookmark {
+        position: absolute;
+        z-index: 4;
+        right: 54px;
+        top: 16px;
+        width: 38px;
+        height: 38px;
+        display: inline-grid;
+        place-items: center;
+        border: 1px solid var(--archive-line-strong);
+        background: rgba(255, 250, 244, 0.94);
+        color: var(--archive-burgundy);
+        cursor: pointer;
+        font-size: 1rem;
+        transition:
+          transform 0.25s var(--ease),
+          background-color 0.25s ease,
+          color 0.25s ease;
+      }
+
+      .archive-card-bookmark:hover,
+      .archive-card-bookmark:focus-visible,
+      .archive-card-bookmark[aria-pressed="true"] {
+        transform: translateY(-2px);
+        background: var(--archive-burgundy);
+        color: #fffaf4;
+      }
+
+      .archive-card-wrap.is-saved .archive-card-bookmark {
+        background: var(--archive-burgundy);
+        color: #fffaf4;
+      }
+
+      .archive-pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 28px 0 6px;
+        background: var(--archive-peach);
+      }
+
+      .archive-page-btn {
+        min-width: 44px;
+        min-height: 44px;
+        padding: 0 12px;
+        border: 1px solid var(--archive-line-strong);
+        background: var(--archive-surface);
+        color: var(--archive-ink);
+        cursor: pointer;
+        font: 600 0.76rem/1 var(--heading);
+        letter-spacing: 0.05em;
+      }
+
+      .archive-page-btn:hover:not(:disabled),
+      .archive-page-btn:focus-visible:not(:disabled),
+      .archive-page-btn[aria-current="page"] {
+        background: var(--archive-burgundy);
+        border-color: var(--archive-burgundy);
+        color: #fffaf4;
+      }
+
+      .archive-page-btn:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+
+      .archive-page-indicator {
+        min-width: 90px;
+        text-align: center;
+        color: var(--archive-muted);
+        font: 600 0.75rem/1.2 var(--heading);
+        letter-spacing: 0.08em;
+      }
+
+      .archive-shortcuts {
+        color: var(--archive-muted);
+        font: 500 0.72rem/1.4 var(--sans);
+      }
+
+      kbd {
+        display: inline-block;
+        padding: 2px 5px;
+        border: 1px solid var(--archive-line-strong);
+        background: var(--archive-surface);
+        color: var(--archive-ink);
+        font: 600 0.68rem/1 var(--mono);
+      }
+
+      .archive-sr-status {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      .archive-page:focus-visible {
+        outline: none;
+      }
+      .archive-page a:focus-visible,
+      .archive-page button:focus-visible,
+      .archive-page input:focus-visible,
+      .archive-page select:focus-visible {
+        outline: 3px solid var(--archive-burgundy);
+        outline-offset: 3px;
+      }
+
+      @media (max-width: 900px) {
+        .archive-grid[data-view="grid"] {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .archive-tool-row {
+          display: grid;
+          grid-template-columns: 1fr;
+        }
+        .archive-tool-group,
+        .archive-tool-group.wide {
+          min-width: 0;
+          width: 100%;
+        }
+        .archive-action-btn {
+          width: 100%;
+        }
+        .archive-results-bar {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+        .archive-card-bookmark {
+          right: 50px;
+          top: 12px;
+          width: 36px;
+          height: 36px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .archive-page *,
+        .archive-page *::before,
+        .archive-page *::after {
+          scroll-behavior: auto !important;
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+        .archive-card:hover,
+        .archive-action-btn:hover,
+        .archive-page-btn:hover {
+          transform: none !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body data-page="archive">
+    <!-- =====================================================
+         ACCESSIBILITY
+         ===================================================== -->
+
+    <a href="#archive-content" class="skip-link"> Skip to archive </a>
+
+    <!-- =====================================================
+         NAVIGATION
+         ===================================================== -->
+
+    <header class="site-header">
+      <div class="nav-shell">
+        <!-- BRAND -->
+
+        <a href="/" class="brand" aria-label="SHUBWORKS home">
+          <span class="brand-shub"> SHUB </span>
+
+          <span class="brand-works"> WORKS </span>
+        </a>
+
+        <!-- DESKTOP NAV -->
+
+        <nav class="primary-nav" aria-label="Primary navigation">
+          <a href="/" class="nav-link"> HOME </a>
+
+          <a href="archive.html" class="nav-link active">
+            ARCHIVE
+
+            <span class="nav-count" id="nav-count"> — </span>
+          </a>
+
+          <a href="archive.html?type=story" class="nav-link"> STORIES </a>
+
+          <a href="archive.html?type=poem" class="nav-link"> POEMS </a>
+
+          <a href="archive.html?type=fable" class="nav-link"> FABLES </a>
+
+          <a href="archive.html?type=novel" class="nav-link"> NOVELS </a>
+
+          <a href="map.html" class="nav-link"> READING MAP </a>
+
+          <a href="/#about" class="nav-link"> ABOUT </a>
+        </nav>
+
+        <!-- NAV UTILITY -->
+
+        <div class="nav-utility">
+          <span class="nav-status">
+            <span class="status-dot"></span>
+
+            <span> LIVE </span>
+          </span>
+
+          <span class="nav-archive-count">
+            <span id="nav-live-count"> — </span>
+
+            WORKS
+          </span>
+
+          <button
+            type="button"
+            class="menu-button"
+            id="menu-button"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+            aria-controls="mobile-navigation"
+          >
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- =====================================================
+         MOBILE NAVIGATION
+         ===================================================== -->
+
+    <nav
+      id="mobile-navigation"
+      class="mobile-navigation"
+      aria-label="Mobile navigation"
+      aria-hidden="true"
+    >
+      <div class="mobile-navigation-inner">
+        <div class="mobile-navigation-top">
+          <span> SHUBWORKS </span>
+
+          <span> INDEX / 2026 </span>
+        </div>
+
+        <div class="mobile-nav-links">
+          <a href="/">
+            <span>01</span>
+            HOME
+            <b>↗</b>
+          </a>
+
+          <a href="archive.html">
+            <span>02</span>
+            ARCHIVE
+            <b id="mobile-nav-count">—</b>
+          </a>
+
+          <a href="archive.html?type=story">
+            <span>03</span>
+            STORIES
+            <b>↗</b>
+          </a>
+
+          <a href="archive.html?type=poem">
+            <span>04</span>
+            POEMS
+            <b>↗</b>
+          </a>
+
+          <a href="archive.html?type=fable">
+            <span>05</span>
+            FABLES
+            <b>↗</b>
+          </a>
+
+          <a href="archive.html?type=novel">
+            <span>06</span>
+            NOVELS
+            <b>↗</b>
+          </a>
+
+          <a href="map.html"> READING MAP </a>
+
+          <a href="/#about">
+            <span>07</span>
+            ABOUT
+            <b>↗</b>
+          </a>
+        </div>
+
+        <div class="mobile-navigation-bottom">
+          <span> THE ARCHIVE IS ALIVE </span>
+
+          <span> SHUBWORKS / 2026 </span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- =====================================================
+         ARCHIVE CONTENT
+         ===================================================== -->
+
+    <main id="archive-content" class="archive-page">
+      <!-- =================================================
+             ARCHIVE HERO
+             ================================================= -->
+
+      <section class="archive-hero">
+        <div class="archive-hero-inner">
+          <div class="archive-hero-top">
+            <div class="archive-kicker">
+              <span> 01 </span>
+
+              <span> SHUBWORKS / INDEX </span>
+            </div>
+
+            <div class="archive-hero-status">
+              <span class="status-dot"></span>
+
+              LIVE COLLECTION
+            </div>
+          </div>
+
+          <div class="archive-hero-main">
+            <div class="archive-title-wrap">
+              <span class="archive-title-small"> THE COMPLETE </span>
+
+              <h1>ARCHIVE<span>.</span></h1>
+            </div>
+
+            <div class="archive-introduction">
+              <p>
+                Stories, poems, fables, novels and unfinished worlds — collected
+                over time and preserved in one evolving literary archive.
+              </p>
+
+              <div class="archive-introduction-meta">
+                <span> COLLECTION </span>
+
+                <strong> 001 </strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="archive-hero-bottom">
+            <span> ALL WRITINGS </span>
+
+            <span> ↓ SCROLL TO EXPLORE </span>
+
+            <span> 2026 </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================
+             ARCHIVE SUMMARY
+             ================================================= -->
+
+      <section class="archive-summary">
+        <div class="archive-summary-inner">
+          <div class="archive-summary-item">
+            <span> TOTAL WORKS </span>
+
+            <strong id="archive-total"> — </strong>
+          </div>
+
+          <div class="archive-summary-item">
+            <span> COLLECTION STATUS </span>
+
+            <strong> LIVE </strong>
+          </div>
+
+          <div class="archive-summary-item">
+            <span> INDEX </span>
+
+            <strong> 001 </strong>
+          </div>
+
+          <div class="archive-summary-message">
+            THE ARCHIVE CONTINUES TO GROW.
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================
+             FILTER / SEARCH
+             ================================================= -->
+
+      <section class="archive-controls" aria-label="Archive controls">
+        <div class="archive-controls-inner">
+          <div class="archive-filter-area">
+            <span class="control-label"> FILTER BY TYPE </span>
+
+            <div
+              class="archive-filters"
+              role="group"
+              aria-label="Filter works by type"
+            >
+              <button class="filter-btn active" data-type="all" type="button">
+                ALL
+              </button>
+
+              <button class="filter-btn" data-type="story" type="button">
+                STORIES
+              </button>
+
+              <button class="filter-btn" data-type="poem" type="button">
+                POEMS
+              </button>
+
+              <button class="filter-btn" data-type="fable" type="button">
+                FABLES
+              </button>
+
+              <button class="filter-btn" data-type="novel" type="button">
+                NOVELS
+              </button>
+            </div>
+          </div>
+
+          <label class="archive-search">
+            <span class="search-label"> SEARCH </span>
+
+            <input
+              id="archive-search"
+              type="search"
+              placeholder="Search the archive..."
+              autocomplete="off"
+              spellcheck="false"
+              aria-label="Search the archive"
+            />
+
+            <span class="archive-search-icon" aria-hidden="true"> / </span>
+          </label>
+
+          <div
+            class="archive-enhanced-tools"
+            aria-label="More archive controls"
+          >
+            <div class="archive-tool-row">
+              <div class="archive-tool-group">
+                <label class="archive-tool-label" for="archive-sort"
+                  >Sort works</label
+                >
+                <select id="archive-sort" class="archive-select">
+                  <option value="newest">Newest first</option>
+                  <option value="oldest">Oldest first</option>
+                  <option value="title-asc">Title A–Z</option>
+                  <option value="title-desc">Title Z–A</option>
+                  <option value="longest">Longest first</option>
+                  <option value="shortest">Shortest first</option>
+                  <option value="reading-longest">Longest reading time</option>
+                </select>
+              </div>
+
+              <div class="archive-tool-group">
+                <label class="archive-tool-label" for="archive-view"
+                  >View</label
+                >
+                <select id="archive-view" class="archive-select">
+                  <option value="list">Editorial list</option>
+                  <option value="grid">Compact grid</option>
+                </select>
+              </div>
+
+              <div class="archive-tool-group wide">
+                <span class="archive-tool-label">Quick actions</span>
+                <div
+                  class="archive-tool-row"
+                  style="align-items: stretch; margin: 0"
+                >
+                  <button
+                    type="button"
+                    class="archive-action-btn"
+                    id="random-work"
+                  >
+                    Surprise me
+                  </button>
+                  <button
+                    type="button"
+                    class="archive-action-btn"
+                    id="saved-only"
+                    aria-pressed="false"
+                  >
+                    Saved works
+                  </button>
+                  <button
+                    type="button"
+                    class="archive-action-btn"
+                    id="clear-archive"
+                  >
+                    Clear filters
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="archive-results-bar">
+              <span
+                ><span class="archive-result-count" id="archive-result-count"
+                  >0</span
+                >
+                works shown</span
+              >
+              <span class="archive-shortcuts"
+                >Press <kbd>/</kbd> to search · <kbd>Esc</kbd> to clear</span
+              >
+            </div>
+            <div
+              id="archive-filter-summary"
+              class="archive-filter-summary"
+              aria-label="Active filters"
+            ></div>
+            <div
+              id="archive-live-status"
+              class="archive-sr-status"
+              aria-live="polite"
+              aria-atomic="true"
+            ></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================
+             COLLECTION HEADER
+             ================================================= -->
+
+      <section class="collection-heading">
+        <div class="collection-heading-inner">
+          <span> NO. </span>
+
+          <span> WORK </span>
+
+          <span> DETAILS </span>
+
+          <span> OPEN </span>
+        </div>
+      </section>
+
+      <!-- =================================================
+             WORKS
+             ================================================= -->
+
+      <section id="worksGrid" class="archive-grid" aria-live="polite">
+        <div class="archive-state">
+          <div class="archive-state-mark">00</div>
+
+          <div class="archive-state-title">OPENING ARCHIVE...</div>
+
+          <div class="archive-state-text">CONNECTING TO SHUBWORKS</div>
+        </div>
+      </section>
+
+      <nav
+        class="archive-pagination"
+        id="archive-pagination"
+        aria-label="Archive pages"
+      >
+        <button
+          type="button"
+          class="archive-page-btn"
+          id="archive-prev"
+          aria-label="Previous page"
+        >
+          ← Previous
+        </button>
+        <span
+          class="archive-page-indicator"
+          id="archive-page-indicator"
+          aria-live="polite"
+          >Page 1</span
+        >
+        <button
+          type="button"
+          class="archive-page-btn"
+          id="archive-next"
+          aria-label="Next page"
+        >
+          Next →
+        </button>
+      </nav>
+
+      <!-- =================================================
+             ARCHIVE FOOTER CTA
+             ================================================= -->
+
+      <section class="archive-end">
+        <div class="archive-end-inner">
+          <div class="archive-end-number">02</div>
+
+          <div class="archive-end-content">
+            <span> END OF CURRENT INDEX </span>
+
+            <h2>
+              KEEP
+              <em>READING.</em>
+            </h2>
+
+            <p>There is always something else waiting inside the archive.</p>
+          </div>
+
+          <a href="/" class="archive-end-link">
+            RETURN HOME
+
+            <span> ↗ </span>
+          </a>
+        </div>
+      </section>
+
+      <!-- =================================================
+             FOOTER
+             ================================================= -->
+
+      <footer class="site-footer archive-footer">
+        <div class="footer-main">
+          <a href="/" class="brand footer-brand" aria-label="SHUBWORKS home">
+            <span class="brand-shub"> SHUB </span>
+
+            <span class="brand-works"> WORKS </span>
+          </a>
+
+          <div class="footer-message">
+            <span> THE ARCHIVE </span>
+
+            <span> IS ALIVE. </span>
+          </div>
+
+          <a href="#archive-content" class="back-top"> ↑ TOP </a>
+        </div>
+
+        <div class="footer-bottom">
+          <span> © 2026 SHUBWORKS </span>
+
+          <span> PERSONAL LITERARY ARCHIVE </span>
+
+          <span> COLLECTION / 001 </span>
+        </div>
+      </footer>
+    </main>
+
+    <!-- =====================================================
+         ARCHIVE LOGIC
+         ===================================================== -->
+
+    <script src="js/api.js"></script>
+    <script>
+      /*
+       * =====================================================
+       * SHUBWORKS ARCHIVE — DISCOVERY ENGINE
+       * =====================================================
+       */
+      const grid = document.getElementById("worksGrid");
+      const buttons = document.querySelectorAll(".filter-btn");
+      const searchInput = document.getElementById("archive-search");
+      const totalElement = document.getElementById("archive-total");
+      const navCount = document.getElementById("nav-count");
+      const liveCount = document.getElementById("nav-live-count");
+      const mobileCount = document.getElementById("mobile-nav-count");
+      const sortSelect = document.getElementById("archive-sort");
+      const viewSelect = document.getElementById("archive-view");
+      const randomButton = document.getElementById("random-work");
+      const savedButton = document.getElementById("saved-only");
+      const clearButton = document.getElementById("clear-archive");
+      const resultCount = document.getElementById("archive-result-count");
+      const filterSummary = document.getElementById("archive-filter-summary");
+      const liveStatus = document.getElementById("archive-live-status");
+      const pagination = document.getElementById("archive-pagination");
+      const prevButton = document.getElementById("archive-prev");
+      const nextButton = document.getElementById("archive-next");
+      const pageIndicator = document.getElementById("archive-page-indicator");
+
+      const PAGE_SIZE = 36;
+      let allWorks = [];
+      let activeType = "all";
+      let searchTerm = "";
+      let sortMode = "newest";
+      let viewMode = localStorage.getItem("shubworks-archive-view") || "list";
+      let currentPage = 1;
+      let savedOnly = false;
+      let savedWorks = new Set();
+      try {
+        const storedSaved = JSON.parse(
+          localStorage.getItem("shubworks-saved") || "[]",
+        );
+        if (Array.isArray(storedSaved))
+          savedWorks = new Set(storedSaved.map(String));
+      } catch {
+        localStorage.removeItem("shubworks-saved");
+      }
+
+      function escapeHTML(value) {
+        return String(value ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function numberValue(value) {
+        const number = Number(value);
+        return Number.isFinite(number) ? number : 0;
+      }
+
+      function formatReadingTime(value) {
+        const minutes = Math.round(numberValue(value));
+        if (!minutes) return "";
+        if (minutes < 60) return `${minutes} MIN`;
+        const hours = Math.floor(minutes / 60);
+        const remaining = minutes % 60;
+        return remaining
+          ? `${hours} HR${hours === 1 ? "" : "S"} ${remaining} MIN`
+          : `${hours} HR${hours === 1 ? "" : "S"}`;
+      }
+
+      function getDescription(work) {
+        return (
+          work.description ||
+          work.excerpt ||
+          work.summary ||
+          "A work from the SHUBWORKS literary archive."
+        );
+      }
+
+      function getType(work) {
+        const raw = String(work.type || "work")
+          .toLowerCase()
+          .trim();
+        return raw === "story" || raw === "stories"
+          ? "story"
+          : raw.replace(/[-_\s]+/g, "");
+      }
+
+      function getSearchText(work) {
+        const tags = Array.isArray(work.tags)
+          ? work.tags.join(" ")
+          : String(work.tags || "");
+        const categories = Array.isArray(work.categories)
+          ? work.categories.join(" ")
+          : String(work.categories || "");
+        return [
+          work.title,
+          getDescription(work),
+          work.universe,
+          tags,
+          categories,
+          getType(work),
+        ]
+          .join(" ")
+          .toLowerCase();
+      }
+
+      function workKey(work) {
+        return String(work.slug || work.id || work.title || "");
+      }
+
+      function getDateValue(work) {
+        return (
+          new Date(
+            work.created_at ||
+              work.createdAt ||
+              work.published_at ||
+              work.publishedAt ||
+              0,
+          ).getTime() || 0
+        );
+      }
+
+      function saveBookmarks() {
+        localStorage.setItem(
+          "shubworks-saved",
+          JSON.stringify([...savedWorks]),
+        );
+      }
+
+      function announce(message) {
+        if (!liveStatus) return;
+        liveStatus.textContent = "";
+        requestAnimationFrame(() => {
+          liveStatus.textContent = message;
+        });
+      }
+
+      function updateSummary(filtered) {
+        if (resultCount)
+          resultCount.textContent = filtered.length.toLocaleString("en-IN");
+        const parts = [];
+        if (activeType !== "all") parts.push(activeType.toUpperCase());
+        if (searchTerm) parts.push(`SEARCH: “${searchTerm}”`);
+        if (savedOnly) parts.push("SAVED");
+        filterSummary.innerHTML = parts
+          .map(
+            (part) => `<span class="archive-chip">${escapeHTML(part)}</span>`,
+          )
+          .join("");
+      }
+
+      function sortWorks(works) {
+        const copy = [...works];
+        const title = (w) => String(w.title || "Untitled").toLocaleLowerCase();
+        const words = (w) =>
+          numberValue(w.word_count ?? w.wordCount ?? w.words);
+        const reading = (w) =>
+          numberValue(
+            w.reading_time ??
+              w.readingTime ??
+              w.reading_minutes ??
+              w.readingMinutes,
+          );
+        switch (sortMode) {
+          case "oldest":
+            return copy.sort((a, b) => getDateValue(a) - getDateValue(b));
+          case "title-asc":
+            return copy.sort((a, b) => title(a).localeCompare(title(b)));
+          case "title-desc":
+            return copy.sort((a, b) => title(b).localeCompare(title(a)));
+          case "longest":
+            return copy.sort((a, b) => words(b) - words(a));
+          case "shortest":
+            return copy.sort((a, b) => words(a) - words(b));
+          case "reading-longest":
+            return copy.sort((a, b) => reading(b) - reading(a));
+          default:
+            return copy.sort((a, b) => getDateValue(b) - getDateValue(a));
+        }
+      }
+
+      function getFilteredWorks() {
+        const filtered = allWorks.filter((work) => {
+          const type = getType(work);
+          if (activeType !== "all" && type !== activeType) return false;
+          if (savedOnly && !savedWorks.has(workKey(work))) return false;
+          return !searchTerm || getSearchText(work).includes(searchTerm);
+        });
+        return sortWorks(filtered);
+      }
+
+      function render() {
+        const works = getFilteredWorks();
+        const totalPages = Math.max(1, Math.ceil(works.length / PAGE_SIZE));
+        currentPage = Math.min(Math.max(1, currentPage), totalPages);
+        const start = (currentPage - 1) * PAGE_SIZE;
+        const pageWorks = works.slice(start, start + PAGE_SIZE);
+        grid.dataset.view = viewMode;
+        updateSummary(works);
+
+        if (works.length === 0) {
+          grid.innerHTML = `<div class="archive-state"><div class="archive-state-mark">00</div><div class="archive-state-title">NOTHING FOUND.</div><div class="archive-state-text">Try another category, search term, or clear the active filters.</div></div>`;
+        } else {
+          grid.innerHTML = pageWorks
+            .map((work, index) => {
+              const title = escapeHTML(work.title || "Untitled");
+              const type = getType(work);
+              const words = numberValue(
+                work.word_count ?? work.wordCount ?? work.words,
+              );
+              const reading = formatReadingTime(
+                work.reading_time ??
+                  work.readingTime ??
+                  work.reading_minutes ??
+                  work.readingMinutes,
+              );
+              const description = escapeHTML(getDescription(work));
+              const slug = encodeURIComponent(work.slug || "");
+              const key = escapeHTML(workKey(work));
+              const saved = savedWorks.has(workKey(work));
+              const archiveNumber = String(start + index + 1).padStart(3, "0");
+              return `<div class="archive-card-wrap ${saved ? "is-saved" : ""}" data-key="${key}">
+              <button type="button" class="archive-card-bookmark" aria-label="${saved ? "Remove from saved works" : "Save this work"}" aria-pressed="${saved}" data-save-key="${key}">${saved ? "★" : "☆"}</button>
+              <a href="reader.html?slug=${slug}" class="archive-card magnetic" data-type="${escapeHTML(type)}" aria-label="Open ${title}">
+                <span class="archive-card-number">${archiveNumber}</span>
+                <span class="archive-card-main">
+                  <span class="archive-card-type">${escapeHTML(type.toUpperCase())}</span>
+                  <span class="archive-card-title">${title}</span>
+                  <span class="archive-card-description">${description}</span>
+                </span>
+                <span class="archive-card-meta"><span>${words.toLocaleString("en-IN")} WORDS</span>${reading ? `<span>${escapeHTML(reading)}</span>` : ""}</span>
+                <span class="archive-card-arrow" aria-hidden="true">↗</span>
+              </a>
+            </div>`;
+            })
+            .join("");
+          bindMagnetic();
+          bindBookmarks();
+        }
+
+        pagination.hidden = works.length <= PAGE_SIZE;
+        prevButton.disabled = currentPage <= 1;
+        nextButton.disabled = currentPage >= totalPages;
+        pageIndicator.textContent = `Page ${currentPage} of ${totalPages}`;
+        if (currentPage > 1)
+          grid.querySelector(".archive-card a")?.focus({ preventScroll: true });
+      }
+
+      function bindBookmarks() {
+        document.querySelectorAll("[data-save-key]").forEach((button) => {
+          button.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            const key = button.dataset.saveKey;
+            if (savedWorks.has(key)) {
+              savedWorks.delete(key);
+              announce("Removed from saved works.");
+            } else {
+              savedWorks.add(key);
+              announce("Saved to your archive.");
+            }
+            saveBookmarks();
+            render();
+          });
+        });
+      }
+
+      function bindMagnetic() {
+        if (
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+          !window.matchMedia("(pointer:fine)").matches
+        )
+          return;
+        document
+          .querySelectorAll(".archive-card.magnetic")
+          .forEach((element) => {
+            if (element.dataset.bound) return;
+            element.dataset.bound = "true";
+            element.addEventListener("mousemove", (event) => {
+              const rect = element.getBoundingClientRect();
+              const x = event.clientX - rect.left - rect.width / 2;
+              const y = event.clientY - rect.top - rect.height / 2;
+              element.style.transform = `translate(${x * 0.018}px, ${y * 0.018}px)`;
+            });
+            element.addEventListener("mouseleave", () => {
+              element.style.transform = "";
+            });
+          });
+      }
+
+      async function loadWorks() {
+        try {
+          const first = await window.SHUBWORKS_API.getWorks({
+            page: 1,
+            limit: 100,
+            sort: "newest"
+          });
+
+          const pages = first.pagination?.totalPages || 1;
+          const all = [...(first.data || [])];
+
+          for (let page = 2; page <= pages; page++) {
+            const payload = await window.SHUBWORKS_API.getWorks({
+              page,
+              limit: 100,
+              sort: "newest"
+            });
+            all.push(...(payload.data || []));
+          }
+
+          allWorks = all.filter(
+            (work) => work?.published !== false && work?.published !== 0,
+          );
+
+          const total = first.pagination?.total ?? allWorks.length;
+          totalElement.textContent = total.toLocaleString("en-IN");
+          navCount.textContent = total;
+          liveCount.textContent = total;
+          mobileCount.textContent = total;
+
+          const params = new URLSearchParams(window.location.search);
+          const urlType = String(params.get("type") || "").toLowerCase();
+          if (["story", "poem", "fable", "novel"].includes(urlType))
+            activeType = urlType;
+          buttons.forEach((button) =>
+            button.classList.toggle(
+              "active",
+              button.dataset.type === activeType,
+            ),
+          );
+          render();
+          announce(`${total.toLocaleString("en-IN")} works loaded.`);
+
+          return allWorks;
+        } catch (error) {
+          console.error("Archive API error:", error);
+          throw error;
+        }
+      }
+
+      buttons.forEach((button) =>
+        button.addEventListener("click", () => {
+          activeType = button.dataset.type || "all";
+          buttons.forEach((item) =>
+            item.classList.toggle("active", item === button),
+          );
+          const url = new URL(window.location.href);
+          activeType === "all"
+            ? url.searchParams.delete("type")
+            : url.searchParams.set("type", activeType);
+          window.history.replaceState({}, "", url);
+          currentPage = 1;
+          render();
+          announce(
+            `${activeType === "all" ? "All works" : activeType} filter applied.`,
+          );
+        }),
+      );
+
+      searchInput?.addEventListener("input", (event) => {
+        searchTerm = String(event.target.value || "")
+          .trim()
+          .toLowerCase();
+        currentPage = 1;
+        render();
+      });
+
+      sortSelect?.addEventListener("change", (event) => {
+        sortMode = event.target.value;
+        currentPage = 1;
+        render();
+        announce(
+          `Sorted by ${event.target.options[event.target.selectedIndex].text}.`,
+        );
+      });
+
+      viewSelect.value = viewMode;
+      viewSelect?.addEventListener("change", (event) => {
+        viewMode = event.target.value;
+        localStorage.setItem("shubworks-archive-view", viewMode);
+        render();
+        announce(
+          `${viewMode === "grid" ? "Compact grid" : "Editorial list"} view selected.`,
+        );
+      });
+
+      savedButton?.addEventListener("click", () => {
+        savedOnly = !savedOnly;
+        savedButton.setAttribute("aria-pressed", String(savedOnly));
+        currentPage = 1;
+        render();
+        announce(savedOnly ? "Showing saved works." : "Showing all works.");
+      });
+
+      clearButton?.addEventListener("click", () => {
+        activeType = "all";
+        searchTerm = "";
+        savedOnly = false;
+        sortMode = "newest";
+        currentPage = 1;
+        searchInput.value = "";
+        sortSelect.value = "newest";
+        savedButton.setAttribute("aria-pressed", "false");
+        buttons.forEach((item) =>
+          item.classList.toggle("active", item.dataset.type === "all"),
+        );
+        const url = new URL(window.location.href);
+        url.searchParams.delete("type");
+        window.history.replaceState({}, "", url);
+        render();
+        announce("Archive filters cleared.");
+      });
+
+      randomButton?.addEventListener("click", () => {
+        const works = getFilteredWorks();
+        if (!works.length)
+          return announce("There are no works matching the current filters.");
+        const work = works[Math.floor(Math.random() * works.length)];
+        window.location.href = `reader.html?slug=${encodeURIComponent(work.slug || "")}`;
+      });
+
+      prevButton?.addEventListener("click", () => {
+        if (currentPage <= 1) return;
+        currentPage -= 1;
+        render();
+        window.scrollTo({
+          top: grid.getBoundingClientRect().top + window.scrollY - 100,
+          behavior: "smooth",
+        });
+      });
+
+      nextButton?.addEventListener("click", () => {
+        const totalPages = Math.max(
+          1,
+          Math.ceil(getFilteredWorks().length / PAGE_SIZE),
+        );
+        if (currentPage >= totalPages) return;
+        currentPage += 1;
+        render();
+        window.scrollTo({
+          top: grid.getBoundingClientRect().top + window.scrollY - 100,
+          behavior: "smooth",
+        });
+      });
+
+      document.addEventListener("keydown", (event) => {
+        const tag = document.activeElement?.tagName?.toLowerCase();
+        const typing =
+          tag === "input" ||
+          tag === "textarea" ||
+          tag === "select" ||
+          document.activeElement?.isContentEditable;
+        if (event.key === "/" && !typing) {
+          event.preventDefault();
+          searchInput?.focus();
+        }
+        if (
+          event.key === "Escape" &&
+          document.activeElement === searchInput &&
+          searchInput.value
+        ) {
+          searchInput.value = "";
+          searchTerm = "";
+          currentPage = 1;
+          render();
+          announce("Search cleared.");
+        }
+      });
+
+      if (viewSelect) viewSelect.value = viewMode;
+      loadWorks();
+    </script>
+  
+</html>

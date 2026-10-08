@@ -1,0 +1,1250 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>SHUBWORKS — Reading</title>
+
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="SHUBWORKS">
+
+    <link id="canonical-url" rel="canonical"
+          href="https://shubworks.netlify.app/reader.html">
+
+    <meta name="description"
+          content="Read literary works from the SHUBWORKS archive.">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta id="og-title" property="og:title" content="SHUBWORKS — Reading">
+    <meta id="og-description" property="og:description"
+          content="Read literary works from the SHUBWORKS archive.">
+    <meta id="og-url" property="og:url"
+          content="https://shubworks.netlify.app/reader.html">
+    <meta property="og:site_name" content="SHUBWORKS">
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary">
+    <meta id="twitter-title" name="twitter:title"
+          content="SHUBWORKS — Reading">
+    <meta id="twitter-description" name="twitter:description"
+          content="Read literary works from the SHUBWORKS archive.">
+
+    <!-- Structured data -->
+    <script id="work-schema" type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "CreativeWork",
+        "name": "SHUBWORKS Literary Work",
+        "author": {
+            "@type": "Person",
+            "name": "SHUBWORKS"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "SHUBWORKS"
+        }
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=League+Spartan:wght@400;500;600;700&family=Nunito:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&family=Sanchez:ital@0;1&family=Satisfy&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --paper: #f7efe7;
+        --paper-deep: #eee0d4;
+        --ink: #12100f;
+        --muted: #71665f;
+        --burgundy: #6b2433;
+        --burgundy-dark: #4b1723;
+        --burgundy-soft: #a55a67;
+        --line: rgba(18, 16, 15, 0.14);
+        --white: #fffaf5;
+        --content-width: 980px;
+        --reading-size: 20px;
+        --reading-leading: 1.92;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Nunito", sans-serif;
+        overflow-x: hidden;
+      }
+      ::selection {
+        background: var(--burgundy);
+        color: var(--white);
+      }
+
+      .cursor {
+        position: fixed;
+        width: 7px;
+        height: 7px;
+        background: var(--burgundy);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+      }
+      .cursor-follow {
+        position: fixed;
+        width: 34px;
+        height: 34px;
+        border: 1px solid rgba(107, 36, 51, 0.45);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9998;
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.25s ease,
+          height 0.25s ease;
+      }
+
+      .progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 4px;
+        width: 0%;
+        background: var(--burgundy);
+        z-index: 10000;
+        box-shadow: 0 1px 12px rgba(107, 36, 51, 0.25);
+      }
+
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 25px 5vw;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1000;
+        background: linear-gradient(
+          to bottom,
+          rgba(247, 239, 231, 0.96),
+          rgba(247, 239, 231, 0)
+        );
+      }
+      .logo {
+        color: var(--ink);
+        text-decoration: none;
+        font-family: "League Spartan", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        transition: color 0.25s ease;
+      }
+      .logo:hover {
+        color: var(--burgundy);
+      }
+      .back {
+        color: var(--burgundy);
+        text-decoration: none;
+        font-family: "League Spartan", sans-serif;
+        font-size: 11px;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+        border-bottom: 1px solid transparent;
+        transition:
+          border-color 0.25s ease,
+          color 0.25s ease;
+      }
+      .back:hover {
+        color: var(--burgundy-dark);
+        border-color: var(--burgundy);
+      }
+
+      .hero {
+        min-height: 78vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 150px 8vw 90px;
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px solid var(--line);
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        width: 560px;
+        height: 560px;
+        right: -190px;
+        top: 80px;
+        background: rgba(107, 36, 51, 0.08);
+        filter: blur(90px);
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      .hero::after {
+        content: "";
+        position: absolute;
+        width: 1px;
+        height: 180px;
+        right: 8vw;
+        bottom: 0;
+        background: linear-gradient(var(--burgundy), transparent);
+        opacity: 0.7;
+      }
+      .type {
+        font-family: "League Spartan", sans-serif;
+        font-size: 11px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--burgundy);
+        margin-bottom: 25px;
+        position: relative;
+      }
+      .type::before {
+        content: "";
+        display: inline-block;
+        width: 32px;
+        height: 2px;
+        background: var(--burgundy);
+        vertical-align: middle;
+        margin-right: 12px;
+      }
+      .title {
+        max-width: 1100px;
+        font-family: "Abril Fatface", serif;
+        font-size: clamp(3.6rem, 8vw, 8.5rem);
+        line-height: 0.94;
+        font-weight: 400;
+        letter-spacing: -0.025em;
+        color: var(--ink);
+        position: relative;
+      }
+      .universe {
+        margin-top: 30px;
+        font-family: "Satisfy", cursive;
+        font-size: 22px;
+        color: var(--burgundy);
+        position: relative;
+      }
+
+      .meta {
+        padding: 24px 8vw;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        gap: 48px;
+        flex-wrap: wrap;
+        background: rgba(255, 250, 245, 0.38);
+      }
+      .meta-item {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        min-width: 90px;
+      }
+      .meta-label {
+        font-family: "League Spartan", sans-serif;
+        font-size: 9px;
+        letter-spacing: 0.17em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .meta-value {
+        font-family: "Sanchez", serif;
+        font-size: 13px;
+        color: var(--ink);
+        font-weight: 400;
+      }
+
+      .reader {
+        max-width: var(--content-width);
+        margin: 0 auto;
+        padding: 90px 34px 150px;
+      }
+      .reader-tools {
+        position: sticky;
+        top: 18px;
+        z-index: 50;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 14px;
+        margin: 0 auto 58px;
+        padding: 10px 12px;
+        width: min(100%, 900px);
+        background: rgba(255, 250, 245, 0.9);
+        border: 1px solid var(--line);
+        backdrop-filter: blur(14px);
+        box-shadow: 0 10px 30px rgba(75, 23, 35, 0.06);
+      }
+      .tool-group {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .tool-btn {
+        border: 1px solid rgba(107, 36, 51, 0.2);
+        background: transparent;
+        color: var(--ink);
+        min-width: 34px;
+        height: 34px;
+        padding: 0 10px;
+        cursor: pointer;
+        font-family: "League Spartan", sans-serif;
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        transition: 0.25s ease;
+      }
+      .tool-btn:hover,
+      .tool-btn.active {
+        background: var(--burgundy);
+        color: var(--white);
+        border-color: var(--burgundy);
+        transform: translateY(-1px);
+      }
+      .tool-label {
+        font-family: "League Spartan", sans-serif;
+        font-size: 9px;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+        text-transform: uppercase;
+        margin-right: 4px;
+      }
+      .progress-copy {
+        font-family: "Sanchez", serif;
+        font-size: 12px;
+        color: var(--burgundy);
+        min-width: 42px;
+        text-align: right;
+      }
+      .reading-note {
+        font-family: "Satisfy", cursive;
+        color: var(--burgundy);
+        font-size: 18px;
+        margin-bottom: 34px;
+        opacity: 0.9;
+      }
+      .reader.focus-mode .hero,
+      .reader.focus-mode ~ footer,
+      body.focus-mode nav {
+        opacity: 0.15;
+        transition: opacity 0.35s ease;
+      }
+      body.focus-mode .reader {
+        max-width: 1060px;
+      }
+      body.focus-mode .reader-tools {
+        opacity: 1;
+      }
+      body.focus-mode .meta,
+      body.focus-mode footer {
+        display: none;
+      }
+      .top-button {
+        position: fixed;
+        right: 28px;
+        bottom: 28px;
+        width: 44px;
+        height: 44px;
+        border: 1px solid rgba(107, 36, 51, 0.25);
+        background: var(--paper);
+        color: var(--burgundy);
+        cursor: pointer;
+        z-index: 100;
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.3s ease;
+        font-family: "League Spartan", sans-serif;
+      }
+      .top-button.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .content {
+        font-family: "Sanchez", Georgia, serif;
+        font-size: var(--reading-size);
+        line-height: var(--reading-leading);
+        color: #332b27;
+        font-weight: 400;
+        letter-spacing: 0.005em;
+      }
+      .content p {
+        margin-bottom: 31px;
+        font-weight: 400;
+      }
+      .content strong,
+      .content b {
+        font-weight: 400;
+      }
+      .content em,
+      .content i {
+        font-family: "Sanchez", serif;
+        color: var(--burgundy-dark);
+      }
+      .content h1,
+      .content h2,
+      .content h3 {
+        font-family: "Abril Fatface", serif;
+        margin-top: 68px;
+        margin-bottom: 24px;
+        color: var(--ink);
+        font-weight: 400;
+        line-height: 1.05;
+      }
+      .content h1 {
+        font-size: 42px;
+      }
+      .content h2 {
+        font-size: 32px;
+      }
+      .content h3 {
+        font-size: 25px;
+      }
+      .content blockquote {
+        border-left: 3px solid var(--burgundy);
+        margin: 52px 0;
+        padding: 5px 0 5px 28px;
+        color: #66544f;
+        font-style: italic;
+        font-family: "Sanchez", serif;
+      }
+      .content a {
+        color: var(--burgundy);
+        text-decoration-thickness: 1px;
+        text-underline-offset: 4px;
+      }
+      .content a:hover {
+        color: var(--burgundy-dark);
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 72px;
+        padding-top: 24px;
+        border-top: 1px solid var(--line);
+      }
+      .tag {
+        border: 1px solid rgba(107, 36, 51, 0.28);
+        padding: 8px 12px;
+        font-family: "League Spartan", sans-serif;
+        font-size: 9px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--burgundy);
+        transition:
+          background 0.25s ease,
+          color 0.25s ease,
+          transform 0.25s ease;
+      }
+      .tag:hover {
+        background: var(--burgundy);
+        color: var(--white);
+        transform: translateY(-2px);
+      }
+
+      footer {
+        padding: 60px 8vw;
+        border-top: 1px solid var(--line);
+        display: flex;
+        justify-content: space-between;
+        gap: 30px;
+        font-family: "League Spartan", sans-serif;
+        font-size: 9px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        background: var(--paper-deep);
+      }
+      .loading {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "League Spartan", sans-serif;
+        font-size: 11px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--burgundy);
+      }
+      .loading::after {
+        content: "";
+        width: 28px;
+        height: 2px;
+        background: var(--burgundy);
+        margin-left: 14px;
+        animation: pulseLine 1s ease-in-out infinite;
+      }
+      @keyframes pulseLine {
+        0%,
+        100% {
+          transform: scaleX(0.35);
+          transform-origin: left;
+        }
+        50% {
+          transform: scaleX(1);
+          transform-origin: left;
+        }
+      }
+
+      .error {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 18px;
+        text-align: center;
+        padding: 30px;
+      }
+      .error h1 {
+        font-family: "Abril Fatface", serif;
+        font-size: clamp(42px, 7vw, 80px);
+        font-weight: 400;
+        color: var(--ink);
+      }
+      .error p {
+        color: var(--muted);
+        font-family: "Nunito", sans-serif;
+        font-size: 14px;
+      }
+
+      body.dark-reader {
+        background: #171315;
+        color: #f7efe7;
+      }
+      body.dark-reader nav {
+        background: linear-gradient(
+          to bottom,
+          rgba(23, 19, 21, 0.97),
+          rgba(23, 19, 21, 0)
+        );
+      }
+      body.dark-reader .logo,
+      body.dark-reader .title,
+      body.dark-reader .meta-value,
+      body.dark-reader .content h1,
+      body.dark-reader .content h2,
+      body.dark-reader .content h3 {
+        color: #f7efe7;
+      }
+      body.dark-reader .meta {
+        background: rgba(255, 250, 245, 0.025);
+      }
+      body.dark-reader .reader-tools,
+      body.dark-reader .top-button {
+        background: #211a1d;
+        color: #f7efe7;
+        border-color: rgba(247, 239, 231, 0.14);
+      }
+      body.dark-reader .content {
+        color: #eadfd8;
+      }
+      body.dark-reader footer {
+        background: #211a1d;
+      }
+
+      @media (max-width: 700px) {
+        nav {
+          padding: 21px 6vw;
+        }
+        .hero {
+          min-height: 70vh;
+          padding: 125px 6vw 65px;
+        }
+        .title {
+          font-size: 17vw;
+        }
+        .universe {
+          font-size: 19px;
+        }
+        .meta {
+          padding: 22px 6vw;
+          gap: 24px 30px;
+        }
+        .reader {
+          padding: 55px 18px 100px;
+        }
+        .reader-tools {
+          position: sticky;
+          top: 10px;
+          padding: 8px;
+          margin-bottom: 42px;
+        }
+        .tool-label {
+          display: none;
+        }
+        .reading-note {
+          margin-bottom: 24px;
+        }
+        .content {
+          font-size: 18px;
+          line-height: 1.82;
+        }
+        .content p {
+          margin-bottom: 27px;
+        }
+        .content h1 {
+          font-size: 34px;
+        }
+        .content h2 {
+          font-size: 28px;
+        }
+        .content h3 {
+          font-size: 23px;
+        }
+        footer {
+          padding: 45px 6vw;
+          flex-direction: column;
+        }
+        .cursor,
+        .cursor-follow {
+          display: none;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="progress" id="progress"></div>
+
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-follow" id="cursorFollow"></div>
+
+    <div id="app">
+      <div class="loading">Opening archive...</div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+      const app = document.getElementById("app");
+      const progress = document.getElementById("progress");
+
+      /* =========================
+           ESCAPE HTML
+        ========================= */
+
+      function escapeHTML(value) {
+        if (value === null || value === undefined) {
+          return "";
+        }
+
+        return String(value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      /* =========================
+           GET SLUG
+        ========================= */
+
+      const params = new URLSearchParams(window.location.search);
+
+      const slug = params.get("slug");
+
+      if (!slug) {
+        showError(
+          "No work selected",
+          "Return to the archive and choose something to read.",
+        );
+      } else {
+        loadWork(slug);
+      }
+
+      /* =========================
+           LOAD WORK
+        ========================= */
+
+      async function loadWork(slug) {
+        try {
+          const work = await window.SHUBWORKS_API.getWork(slug);
+
+          renderWork(work);
+        } catch (error) {
+          console.error(error);
+
+          showError(
+            "Work unavailable",
+            "This piece could not be loaded from the archive.",
+          );
+        }
+      }
+
+      /* =========================
+           RENDER WORK
+        ========================= */
+
+      function renderWork(work) {
+        document.title = `SHUBWORKS — ${work.title || "Reading"}`;
+
+        const type = work.type || "work";
+
+        const universe = work.universe || "";
+
+        const wordCount = Number(work.word_count) || 0;
+
+        const readingTime = Number(work.reading_time) || 0;
+
+        const tags = Array.isArray(work.tags) ? work.tags : [];
+
+        /*
+         * Try common content field names.
+         */
+
+        const rawContent =
+          work.content ||
+          work.body ||
+          work.text ||
+          work.content_text ||
+          work.description ||
+          "";
+
+        const contentHTML = formatContent(rawContent);
+
+        app.innerHTML = `
+
+                <nav>
+
+                    <a
+                        href="/"
+                        class="logo"
+                    >
+                        SHUBWORKS
+                    </a>
+
+
+                    <a
+                        href="archive.html"
+                        class="back"
+                    >
+                        ← Archive
+                    </a>
+
+                </nav>
+
+
+                <header class="hero">
+
+                    <div class="type">
+                        ${escapeHTML(type)}
+                    </div>
+
+
+                    <h1 class="title">
+                        ${escapeHTML(work.title || "Untitled")}
+                    </h1>
+
+
+                    ${
+                      universe
+                        ? `
+                            <div class="universe">
+                                ${escapeHTML(universe)}
+                            </div>
+                        `
+                        : ""
+                    }
+
+                </header>
+
+
+                <section class="meta">
+
+                    <div class="meta-item">
+
+                        <span class="meta-label">
+                            Type
+                        </span>
+
+                        <span class="meta-value">
+                            ${escapeHTML(type)}
+                        </span>
+
+                    </div>
+
+
+                    ${
+                      wordCount
+                        ? `
+                            <div class="meta-item">
+
+                                <span class="meta-label">
+                                    Words
+                                </span>
+
+                                <span class="meta-value">
+                                    ${wordCount.toLocaleString()}
+                                </span>
+
+                            </div>
+                        `
+                        : ""
+                    }
+
+
+                    ${
+                      readingTime
+                        ? `
+                            <div class="meta-item">
+
+                                <span class="meta-label">
+                                    Reading time
+                                </span>
+
+                                <span class="meta-value">
+                                    ${readingTime} min
+                                </span>
+
+                            </div>
+                        `
+                        : ""
+                    }
+
+
+                    ${
+                      tags.length
+                        ? `
+                            <div class="meta-item">
+
+                                <span class="meta-label">
+                                    Tags
+                                </span>
+
+                                <span class="meta-value">
+                                    ${tags.length}
+                                </span>
+
+                            </div>
+                        `
+                        : ""
+                    }
+
+                </section>
+
+
+                <main class="reader">
+
+                    <div class="reader-tools" aria-label="Reading controls">
+                        <div class="tool-group">
+                            <span class="tool-label">Text</span>
+                            <button class="tool-btn" id="fontDown" aria-label="Decrease text size">A−</button>
+                            <button class="tool-btn" id="fontReset" aria-label="Reset text size">A</button>
+                            <button class="tool-btn" id="fontUp" aria-label="Increase text size">A+</button>
+                        </div>
+                        <div class="tool-group">
+                            <button class="tool-btn" id="focusBtn">Focus</button>
+                            <button class="tool-btn" id="themeBtn">Ink</button>
+                            <span class="progress-copy" id="progressCopy">0%</span>
+                        </div>
+                    </div>
+
+                    <div class="reading-note">take your time.</div>
+
+                    <article class="content">
+
+                        ${contentHTML}
+
+                    </article>
+
+
+                    ${
+                      tags.length
+                        ? `
+                            <div class="tags">
+
+                                ${tags
+                                  .map(
+                                    (tag) => `
+                                    <span class="tag">
+                                        ${escapeHTML(tag)}
+                                    </span>
+                                `,
+                                  )
+                                  .join("")}
+
+                            </div>
+                        `
+                        : ""
+                    }
+
+                </main>
+
+
+                <button class="top-button" id="topButton" aria-label="Back to top">↑</button>
+
+                <footer>
+
+                    <span>
+                        SHUBWORKS
+                    </span>
+
+                    <span>
+                        End of work
+                    </span>
+
+                </footer>
+
+            `;
+
+        setupReader();
+      }
+
+      /* =========================
+           FORMAT CONTENT
+        ========================= */
+
+      function formatContent(content) {
+          if (!content) {
+              return `
+                  <p>
+                      The content of this work has not yet
+                      been connected to the reader.
+                  </p>
+              `;
+          }
+
+          /*
+          * Preserve the actual Markdown text.
+          * Normalize Windows CRLF → LF.
+          */
+          const text = String(content)
+              .replace(/\r\n/g, "\n")
+              .replace(/\r/g, "\n")
+              .trim();
+
+          /*
+          * If the API already returned HTML,
+          * preserve it.
+          */
+          if (/<\/(p|div|h1|h2|h3|blockquote|br)>/i.test(text)) {
+              return text;
+          }
+
+          /*
+          * Render the Markdown/plain text exactly:
+          *
+          * - blank line = new paragraph
+          * - single line break = <br>
+          */
+          return text
+              .split(/\n\s*\n/)
+              .map(paragraph => `
+                  <p>
+                      ${escapeHTML(paragraph)
+                          .replace(/\n/g, "<br>\n")}
+                  </p>
+              `)
+              .join("");
+      }
+
+      /* =========================
+           ERROR
+        ========================= */
+
+      function showError(title, message) {
+        app.innerHTML = `
+
+                <div class="error">
+
+                    <h1>
+                        ${escapeHTML(title)}
+                    </h1>
+
+                    <p>
+                        ${escapeHTML(message)}
+                    </p>
+
+                    <a
+                        href="archive.html"
+                        class="back"
+                    >
+                        ← Return to archive
+                    </a>
+
+                </div>
+
+            `;
+      }
+
+      function updateWorkSEO(work) {
+          if (!work) return;
+
+          const title = work.title || "SHUBWORKS Literary Work";
+
+          const type = work.type
+              ? work.type.charAt(0).toUpperCase() + work.type.slice(1)
+              : "Literary Work";
+
+          const universe = work.universe
+              ? ` from the ${work.universe} universe`
+              : "";
+
+          const tags = Array.isArray(work.tags)
+              ? work.tags.slice(0, 3).join(", ")
+              : "";
+
+          const description =
+              `${title} — a ${type.toLowerCase()}${universe} from the SHUBWORKS literary archive.` +
+              (tags ? ` Themes: ${tags}.` : "");
+
+          const slug = work.slug || "";
+
+          const canonicalUrl =
+              `https://shubworks.netlify.app/reader.html?slug=${encodeURIComponent(slug)}`;
+
+          document.title = `${title} — SHUBWORKS`;
+
+          const descriptionMeta =
+              document.querySelector('meta[name="description"]');
+
+          if (descriptionMeta) {
+              descriptionMeta.setAttribute("content", description);
+          }
+
+          const canonical =
+              document.getElementById("canonical-url");
+
+          if (canonical) {
+              canonical.setAttribute("href", canonicalUrl);
+          }
+
+          const ogTitle =
+              document.getElementById("og-title");
+
+          if (ogTitle) {
+              ogTitle.setAttribute("content", `${title} — SHUBWORKS`);
+          }
+
+          const ogDescription =
+              document.getElementById("og-description");
+
+          if (ogDescription) {
+              ogDescription.setAttribute("content", description);
+          }
+
+          const ogUrl =
+              document.getElementById("og-url");
+
+          if (ogUrl) {
+              ogUrl.setAttribute("content", canonicalUrl);
+          }
+
+          const twitterTitle =
+              document.getElementById("twitter-title");
+
+          if (twitterTitle) {
+              twitterTitle.setAttribute(
+                  "content",
+                  `${title} — SHUBWORKS`
+              );
+          }
+
+          const twitterDescription =
+              document.getElementById("twitter-description");
+
+          if (twitterDescription) {
+              twitterDescription.setAttribute(
+                  "content",
+                  description
+              );
+          }
+
+          const schema =
+              document.getElementById("work-schema");
+
+          if (schema) {
+              schema.textContent = JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "CreativeWork",
+                  "name": title,
+                  "url": canonicalUrl,
+                  "description": description,
+                  "author": {
+                      "@type": "Person",
+                      "name": "SHUBWORKS"
+                  },
+                  "publisher": {
+                      "@type": "Organization",
+                      "name": "SHUBWORKS"
+                  },
+                  "isPartOf": {
+                      "@type": "WebSite",
+                      "name": "SHUBWORKS",
+                      "url": "https://shubworks.netlify.app/"
+                  }
+              });
+          }
+        }
+        updateWorkSEO(work);
+
+      /* =========================
+           READER EFFECTS
+        ========================= */
+
+      function setupReader() {
+        /* Reading progress */
+
+        window.addEventListener("scroll", updateProgress);
+
+        updateProgress();
+
+        /* Cursor */
+
+        const cursor = document.getElementById("cursor");
+
+        const follower = document.getElementById("cursorFollow");
+
+        if (cursor && follower) {
+          let mouseX = 0;
+          let mouseY = 0;
+
+          let followerX = 0;
+          let followerY = 0;
+
+          document.addEventListener("mousemove", (event) => {
+            mouseX = event.clientX;
+            mouseY = event.clientY;
+
+            cursor.style.left = `${mouseX}px`;
+
+            cursor.style.top = `${mouseY}px`;
+          });
+
+          function animateFollower() {
+            followerX += (mouseX - followerX) * 0.12;
+
+            followerY += (mouseY - followerY) * 0.12;
+
+            follower.style.left = `${followerX}px`;
+
+            follower.style.top = `${followerY}px`;
+
+            requestAnimationFrame(animateFollower);
+          }
+
+          animateFollower();
+        }
+
+        const root = document.documentElement;
+        const down = document.getElementById("fontDown");
+        const reset = document.getElementById("fontReset");
+        const up = document.getElementById("fontUp");
+        const focus = document.getElementById("focusBtn");
+        const theme = document.getElementById("themeBtn");
+        const top = document.getElementById("topButton");
+
+        const savedSize = Number(localStorage.getItem("shubworks-reader-size"));
+        if (savedSize)
+          root.style.setProperty("--reading-size", `${savedSize}px`);
+
+        function setSize(size) {
+          const value = Math.max(17, Math.min(26, size));
+          root.style.setProperty("--reading-size", `${value}px`);
+          localStorage.setItem("shubworks-reader-size", value);
+        }
+        down?.addEventListener("click", () =>
+          setSize(
+            parseFloat(
+              getComputedStyle(root).getPropertyValue("--reading-size"),
+            ) - 1,
+          ),
+        );
+        up?.addEventListener("click", () =>
+          setSize(
+            parseFloat(
+              getComputedStyle(root).getPropertyValue("--reading-size"),
+            ) + 1,
+          ),
+        );
+        reset?.addEventListener("click", () => {
+          setSize(20);
+          root.style.setProperty("--reading-leading", "1.92");
+        });
+        focus?.addEventListener("click", () => {
+          document.body.classList.toggle("focus-mode");
+          focus.classList.toggle("active");
+        });
+        theme?.addEventListener("click", () => {
+          document.body.classList.toggle("dark-reader");
+          theme.classList.toggle("active");
+          theme.textContent = document.body.classList.contains("dark-reader")
+            ? "Paper"
+            : "Ink";
+        });
+        top?.addEventListener("click", () =>
+          window.scrollTo({ top: 0, behavior: "smooth" }),
+        );
+
+        document.addEventListener("keydown", (event) => {
+          if (event.target.matches("input, textarea, button")) return;
+          if (event.key === "+" || event.key === "=")
+            setSize(
+              parseFloat(
+                getComputedStyle(root).getPropertyValue("--reading-size"),
+              ) + 1,
+            );
+          if (event.key === "-")
+            setSize(
+              parseFloat(
+                getComputedStyle(root).getPropertyValue("--reading-size"),
+              ) - 1,
+            );
+          if (event.key.toLowerCase() === "f") focus?.click();
+        });
+      }
+
+      /* =========================
+           READING PROGRESS
+        ========================= */
+
+      function updateProgress() {
+        const scrollTop = window.scrollY;
+
+        const scrollHeight =
+          document.documentElement.scrollHeight - window.innerHeight;
+
+        if (scrollHeight <= 0) {
+          progress.style.width = "0%";
+
+          return;
+        }
+
+        const percentage = (scrollTop / scrollHeight) * 100;
+
+        const value = Math.min(100, percentage);
+        progress.style.width = `${value}%`;
+        const copy = document.getElementById("progressCopy");
+        if (copy) copy.textContent = `${Math.round(value)}%`;
+        const top = document.getElementById("topButton");
+        if (top) top.classList.toggle("show", scrollTop > 500);
+      }
+    </script>
+  
+</html>

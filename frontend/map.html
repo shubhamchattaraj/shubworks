@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Reading Map — SHUBWORKS</title>
+
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="SHUBWORKS">
+
+    <link rel="canonical" href="https://shubworks.netlify.app/map.html">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Reading Map — SHUBWORKS">
+    <meta property="og:description" content="Explore the SHUBWORKS literary archive through an interactive map of its works and worlds.">
+    <meta property="og:url" content="https://shubworks.netlify.app/map.html">
+    <meta property="og:site_name" content="SHUBWORKS">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Reading Map — SHUBWORKS">
+    <meta name="twitter:description" content="Explore the SHUBWORKS literary archive through an interactive reading map.">
+
+    <link rel="stylesheet" href="map.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=League+Spartan:wght@400;500;600;700&family=Nunito:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&family=Sanchez:ital@0;1&family=Satisfy&display=swap" rel="stylesheet" />
+  </head>
+
+  <body>
+    <header class="site-header">
+      <a href="index.html" class="brand" aria-label="SHUBWORKS — Home">
+        <span class="brand-shub">SHUB</span>
+        <span class="brand-works">WORKS</span>
+      </a>
+
+      <nav class="primary-nav" aria-label="Primary navigation">
+        <a href="/" class="nav-link">HOME</a>
+        <a href="archive.html" class="nav-link active">ARCHIVE</a>
+        <a href="archive.html?type=story" class="nav-link">STORIES</a>
+        <a href="archive.html?type=poem" class="nav-link">POEMS</a>
+        <a href="archive.html?type=fable" class="nav-link">FABLES</a>
+        <a href="archive.html?type=novel" class="nav-link">NOVELS</a>
+        <a href="map.html" class="nav-link active">READING MAP</a>
+        <a href="/#about" class="nav-link">ABOUT</a>
+      </nav>
+    </header>
+
+    <main class="map-page">
+      <section class="map-intro">
+        <div class="map-intro-top">
+          <span class="map-eyebrow">SHUBWORKS / READING MAP</span>
+          <span class="map-status"><span class="status-dot"></span>LIVE ARCHIVE</span>
+        </div>
+
+        <div class="map-intro-content">
+          <div class="map-title-wrap">
+            <h1>A MAP OF <span>READING.</span></h1>
+            <p>Every work in the archive becomes a point in the network. Wander through poems, fables, stories and novels.</p>
+          </div>
+
+          <div class="map-stats">
+            <div class="map-stat"><strong id="map-total-works">0</strong><span>WORKS</span></div>
+            <div class="map-stat"><strong id="map-total-words">0</strong><span>WORDS</span></div>
+            <div class="map-stat"><strong id="map-total-hours">0</strong><span>READING</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="map-controls">
+        <div class="filter-group">
+          <button class="map-filter active" data-filter="all" type="button">ALL</button>
+          <button class="map-filter" data-filter="poem" type="button">POEMS</button>
+          <button class="map-filter" data-filter="fable" type="button">FABLES</button>
+          <button class="map-filter" data-filter="story" type="button">STORIES</button>
+          <button class="map-filter" data-filter="novel" type="button">NOVELS</button>
+        </div>
+        <div class="map-control-info"><span id="visible-count">0</span><span>WORKS VISIBLE</span></div>
+      </section>
+
+      <section class="reading-map" id="reading-map">
+        <div class="map-canvas" id="map-canvas">
+          <!--
+            IMPORTANT: the archive is rendered on one HTML canvas.
+            There are deliberately NO DOM elements for individual works.
+            This keeps the map smooth with thousands of works.
+          -->
+          <canvas id="map-render" aria-label="Interactive reading map"></canvas>
+
+          <div class="map-loading" id="map-loading">
+            <div class="loading-mark"></div>
+            <span>MAPPING THE ARCHIVE...</span>
+          </div>
+
+          <aside class="work-preview" id="work-preview" aria-hidden="true">
+            <button class="preview-close" id="preview-close" type="button" aria-label="Close preview">×</button>
+            <span class="preview-type" id="preview-type"></span>
+            <h2 id="preview-title"></h2>
+            <p class="preview-universe" id="preview-universe"></p>
+            <div class="preview-meta">
+              <span><strong id="preview-words">0</strong> WORDS</span>
+              <span><strong id="preview-time">0</strong> MIN</span>
+            </div>
+            <a href="#" class="preview-open" id="preview-open">OPEN WORK <span>↗</span></a>
+          </aside>
+        </div>
+      </section>
+
+      <section class="map-legend">
+        <div class="legend-title">NETWORK KEY</div>
+        <div class="legend-items">
+          <div class="legend-item"><span class="legend-node poem-node"></span><span>POEM</span></div>
+          <div class="legend-item"><span class="legend-node fable-node"></span><span>FABLE</span></div>
+          <div class="legend-item"><span class="legend-node story-node"></span><span>STORY</span></div>
+          <div class="legend-item"><span class="legend-node novel-node"></span><span>NOVEL</span></div>
+        </div>
+        <p>Node size represents reading length. Connections represent relationships within the archive.</p>
+      </section>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script>
+      (() => {
+        "use strict";
+
+        /*
+         * PERFORMANCE DESIGN
+         * ------------------
+         * The previous map created ~2,127 buttons + thousands of SVG lines.
+         * That is expensive for layout, paint, hover listeners and animations.
+         * This version uses ONE canvas, so the browser only manages one visual
+         * surface. Metadata is still fetched from the same API and the reader
+         * links still work exactly as before.
+         */
+
+        const state = {
+          works: [],
+          filteredWorks: [],
+          stats: null,
+          activeFilter: "all",
+          nodes: [],
+          hovered: -1,
+          selectedWork: null,
+          width: 0,
+          height: 0,
+          dpr: 1,
+          resizeTimer: null,
+          renderQueued: false,
+        };
+
+        const canvasWrap = document.getElementById("map-canvas");
+        const canvas = document.getElementById("map-render");
+        const ctx = canvas.getContext("2d", { alpha: true });
+        const loading = document.getElementById("map-loading");
+        const visibleCount = document.getElementById("visible-count");
+
+        const preview = document.getElementById("work-preview");
+        const previewClose = document.getElementById("preview-close");
+        const previewType = document.getElementById("preview-type");
+        const previewTitle = document.getElementById("preview-title");
+        const previewUniverse = document.getElementById("preview-universe");
+        const previewWords = document.getElementById("preview-words");
+        const previewTime = document.getElementById("preview-time");
+        const previewOpen = document.getElementById("preview-open");
+
+        const numberFormatter = new Intl.NumberFormat("en-IN");
+
+        function formatNumber(value) {
+          return numberFormatter.format(Number(value) || 0);
+        }
+
+        function normalizeType(work) {
+          return String(work.type || "other").toLowerCase().trim();
+        }
+
+        function getReadingMinutes(work) {
+          const provided = Number(work.reading_time);
+          if (provided > 0) return provided;
+
+          const words = Number(work.word_count || 0);
+          if (!words) return 0;
+
+          const speeds = { poem: 130, fable: 210, novel: 250, story: 220 };
+          return Math.max(1, Math.ceil(words / (speeds[normalizeType(work)] || 220)));
+        }
+
+        function getNodeRadius(work) {
+          const words = Number(work.word_count || 0);
+          if (words >= 15000) return 8;
+          if (words >= 7000) return 6.5;
+          if (words >= 3000) return 5.2;
+          if (words >= 1000) return 4.2;
+          return 3.2;
+        }
+
+        function typeClass(type) {
+          return {
+            poem: "poem",
+            fable: "fable",
+            story: "story",
+            novel: "novel",
+          }[type] || "other";
+        }
+
+        function seeded(n) {
+          const value = Math.sin(n * 12.9898 + 78.233) * 43758.5453123;
+          return value - Math.floor(value);
+        }
+
+        function makePositions(works) {
+          const total = works.length;
+          const nodes = new Array(total);
+
+          for (let i = 0; i < total; i++) {
+            const angle = seeded(i + 1) * Math.PI * 2;
+            const radius = 7 + seeded(i + 7) * 41;
+            const x = Math.max(4, Math.min(96, 50 + Math.cos(angle) * radius));
+            const y = Math.max(7, Math.min(93, 50 + Math.sin(angle) * radius * 0.72));
+
+            nodes[i] = {
+              work: works[i],
+              x: x / 100,
+              y: y / 100,
+              radius: getNodeRadius(works[i]),
+              type: typeClass(normalizeType(works[i])),
+            };
+          }
+
+          return nodes;
+        }
+
+        function resizeCanvas() {
+          const rect = canvasWrap.getBoundingClientRect();
+          state.width = Math.max(320, Math.floor(rect.width));
+          state.height = Math.max(420, Math.floor(rect.height));
+          state.dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+          canvas.width = Math.floor(state.width * state.dpr);
+          canvas.height = Math.floor(state.height * state.dpr);
+          canvas.style.width = `${state.width}px`;
+          canvas.style.height = `${state.height}px`;
+
+          ctx.setTransform(state.dpr, 0, 0, state.dpr, 0, 0);
+          requestRender();
+        }
+
+        function colorForType(type) {
+          // These are deliberately subtle and align with the existing theme.
+          if (type === "poem") return "#7c1d3c";
+          if (type === "fable") return "#526b3b";
+          if (type === "story") return "#171717";
+          if (type === "novel") return "#a66a3f";
+          return "#77706b";
+        }
+
+        function drawConnections(nodes) {
+          if (nodes.length < 2) return;
+
+          ctx.save();
+          ctx.lineWidth = 0.65;
+          ctx.strokeStyle = "rgba(86, 67, 59, 0.10)";
+          ctx.beginPath();
+
+          // A sparse deterministic graph: O(n), no distance calculations.
+          // With 2,127 works this is only a few thousand canvas segments.
+          const offsets = nodes.length > 1500 ? [1, 23] : nodes.length > 700 ? [1, 13, 31] : [1, 7, 19];
+
+          for (let i = 0; i < nodes.length; i++) {
+            const a = nodes[i];
+            for (const offset of offsets) {
+              const j = i + offset;
+              if (j >= nodes.length) continue;
+              const b = nodes[j];
+
+              ctx.moveTo(a.x * state.width, a.y * state.height);
+              ctx.lineTo(b.x * state.width, b.y * state.height);
+            }
+          }
+
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        function drawNode(node, index, hovered) {
+          const x = node.x * state.width;
+          const y = node.y * state.height;
+          const r = node.radius + (hovered ? 2.5 : 0);
+          const fill = colorForType(node.type);
+
+          ctx.save();
+
+          if (hovered) {
+            ctx.beginPath();
+            ctx.arc(x, y, r + 7, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(124, 29, 60, 0.10)";
+            ctx.fill();
+          }
+
+          ctx.beginPath();
+          ctx.arc(x, y, r, 0, Math.PI * 2);
+          ctx.fillStyle = fill;
+          ctx.fill();
+
+          if (hovered) {
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "rgba(255,255,255,0.95)";
+            ctx.stroke();
+          }
+
+          ctx.restore();
+
+          // Labels are intentionally limited. Drawing 2,127 labels makes the
+          // map visually noisy and increases paint work without adding value.
+          if (hovered || node.radius >= 6.5) {
+            const title = String(node.work.title || "Untitled");
+            const label = title.length > 30 ? `${title.slice(0, 29)}…` : title;
+            const fontSize = hovered ? 12 : 10;
+
+            ctx.save();
+            ctx.font = `${hovered ? 700 : 600} ${fontSize}px Nunito, sans-serif`;
+            ctx.textBaseline = "middle";
+            ctx.fillStyle = hovered ? "#171717" : "rgba(23,23,23,0.72)";
+            ctx.fillText(label, x + r + 7, y);
+            ctx.restore();
+          }
+        }
+
+        function render() {
+          state.renderQueued = false;
+
+          ctx.clearRect(0, 0, state.width, state.height);
+
+          if (!state.nodes.length) return;
+
+          drawConnections(state.nodes);
+
+          for (let i = 0; i < state.nodes.length; i++) {
+            drawNode(state.nodes[i], i, i === state.hovered);
+          }
+        }
+
+        function requestRender() {
+          if (state.renderQueued) return;
+          state.renderQueued = true;
+          requestAnimationFrame(render);
+        }
+
+        function canvasPoint(event) {
+          const rect = canvas.getBoundingClientRect();
+          return {
+            x: (event.clientX - rect.left) * (state.width / rect.width),
+            y: (event.clientY - rect.top) * (state.height / rect.height),
+          };
+        }
+
+        function findNodeAt(event) {
+          const point = canvasPoint(event);
+          let closest = -1;
+          let closestDistance = Infinity;
+
+          // Hit testing is tiny compared with the old DOM mouse listeners and
+          // only happens while the pointer moves over the map.
+          for (let i = 0; i < state.nodes.length; i++) {
+            const node = state.nodes[i];
+            const dx = point.x - node.x * state.width;
+            const dy = point.y - node.y * state.height;
+            const hit = Math.max(12, node.radius + 7);
+            const distance = dx * dx + dy * dy;
+
+            if (distance <= hit * hit && distance < closestDistance) {
+              closest = i;
+              closestDistance = distance;
+            }
+          }
+
+          return closest;
+        }
+
+        function showPreview(work) {
+          state.selectedWork = work;
+          previewType.textContent = normalizeType(work).toUpperCase();
+          previewTitle.textContent = work.title || "Untitled work";
+          previewUniverse.textContent = work.universe || work.series || "SHUBWORKS ARCHIVE";
+          previewWords.textContent = formatNumber(work.word_count || 0);
+          previewTime.textContent = getReadingMinutes(work);
+          previewOpen.href = `reader.html?slug=${encodeURIComponent(work.slug || work.id)}`;
+          preview.classList.add("visible");
+          preview.setAttribute("aria-hidden", "false");
+        }
+
+        function closePreview() {
+          state.selectedWork = null;
+          preview.classList.remove("visible");
+          preview.setAttribute("aria-hidden", "true");
+        }
+
+        function updateStats() {
+          const stats = state.stats || {};
+          const totalWorks = Number(stats.totalWorks ?? state.works.length);
+          const totalWords = Number(stats.totalWords ?? state.works.reduce((sum, work) => sum + Number(work.word_count || 0), 0));
+          const totalMinutes = Number(stats.readingMinutes ?? state.works.reduce((sum, work) => sum + getReadingMinutes(work), 0));
+          const hours = totalMinutes / 60;
+
+          document.getElementById("map-total-works").textContent = formatNumber(totalWorks);
+          document.getElementById("map-total-words").textContent = formatNumber(totalWords);
+          document.getElementById("map-total-hours").textContent = hours < 1 ? `${Math.round(totalMinutes)}m` : `${hours.toFixed(1)}h`;
+        }
+
+        async function loadWorks() {
+          try {
+            // 250 keeps the number of HTTP requests low without creating a
+            // huge response. All requests return metadata only — no Markdown.
+            const pageSize = 250;
+            const [first, statsPayload] = await Promise.all([
+              window.SHUBWORKS_API.getWorks({ page: 1, limit: pageSize, sort: "newest" }),
+              window.SHUBWORKS_API.getStats().catch(() => null),
+            ]);
+
+            const totalPages = first.pagination?.totalPages || 1;
+            const works = [...(first.data || [])];
+
+            if (totalPages > 1) {
+              const requests = [];
+              for (let page = 2; page <= totalPages; page++) {
+                requests.push(window.SHUBWORKS_API.getWorks({ page, limit: pageSize, sort: "newest" }));
+              }
+
+              const pages = await Promise.all(requests);
+              for (const payload of pages) works.push(...(payload.data || []));
+            }
+
+            state.stats = statsPayload?.stats || null;
+            state.works = works;
+            state.filteredWorks = works;
+            visibleCount.textContent = formatNumber(works.length);
+
+            updateStats();
+            resizeCanvas();
+            rebuildMap();
+
+            loading.classList.add("hidden");
+          } catch (error) {
+            console.error("Reading map API error:", error);
+            loading.innerHTML = `<div class="map-error"><strong>ARCHIVE UNAVAILABLE</strong><span>Could not load the reading map data.</span></div>`;
+            loading.classList.remove("hidden");
+          }
+        }
+
+        function rebuildMap() {
+          closePreview();
+          state.hovered = -1;
+          state.nodes = makePositions(state.filteredWorks);
+          visibleCount.textContent = formatNumber(state.filteredWorks.length);
+          requestRender();
+        }
+
+        document.querySelectorAll(".map-filter").forEach((button) => {
+          button.addEventListener("click", () => {
+            document.querySelectorAll(".map-filter").forEach((item) => item.classList.remove("active"));
+            button.classList.add("active");
+
+            state.activeFilter = button.dataset.filter;
+            state.filteredWorks = state.activeFilter === "all"
+              ? state.works
+              : state.works.filter((work) => normalizeType(work) === state.activeFilter);
+
+            rebuildMap();
+          });
+        });
+
+        canvas.addEventListener("pointermove", (event) => {
+          const next = findNodeAt(event);
+          if (next === state.hovered) return;
+
+          state.hovered = next;
+          canvas.style.cursor = next >= 0 ? "pointer" : "default";
+          requestRender();
+        }, { passive: true });
+
+        canvas.addEventListener("pointerleave", () => {
+          if (state.hovered !== -1) {
+            state.hovered = -1;
+            canvas.style.cursor = "default";
+            requestRender();
+          }
+        }, { passive: true });
+
+        canvas.addEventListener("click", (event) => {
+          const index = findNodeAt(event);
+          if (index >= 0) showPreview(state.nodes[index].work);
+        });
+
+        previewClose.addEventListener("click", closePreview);
+
+        window.addEventListener("resize", () => {
+          clearTimeout(state.resizeTimer);
+          state.resizeTimer = setTimeout(resizeCanvas, 120);
+        }, { passive: true });
+
+        // Give the canvas its first dimensions before the API finishes.
+        resizeCanvas();
+        loadWorks();
+      })();
+    </script>
+  </body>
+</html>

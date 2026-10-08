@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="description"
+      content="SHUBWORKS — A living literary archive of stories, poems, fables, novels and fragments."
+    />
+
+    <!-- SEO -->
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="SHUBWORKS">
+
+    <link rel="canonical" href="https://shubworks.netlify.app/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="SHUBWORKS — Literary Archive">
+    <meta property="og:description" content="A living literary archive of stories, poems, fables, novels and fragments.">
+    <meta property="og:url" content="https://shubworks.netlify.app/">
+    <meta property="og:site_name" content="SHUBWORKS">
+    <meta property="og:image" content="https://shubworks.netlify.app/assets/og-cover.jpg">
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SHUBWORKS — Literary Archive">
+    <meta name="twitter:description" content="A living literary archive of stories, poems, fables, novels and fragments.">
+    <meta name="twitter:image" content="https://shubworks.netlify.app/assets/og-cover.jpg">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "SHUBWORKS",
+        "url": "https://shubworks.netlify.app/",
+        "description": "A living literary archive of stories, poems, fables, novels and fragments."
+    }
+    </script>
+
+    <meta name="theme-color" content="#f5f2eb" />
+    <title>SHUBWORKS — Literary Archive</title>
+
+    <!-- =====================================================
+         FONTS
+         Cormorant Garamond → literary display / reading
+         DM Sans + IBM Plex Mono → interface / metadata
+         ===================================================== -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- =====================================================
+         ACCESSIBILITY / PAGE INTRO
+         ===================================================== -->
+
+    <a class="skip-link" href="#main-content"> Skip to content </a>
+
+    <!-- =====================================================
+         NAVIGATION
+         ===================================================== -->
+
+    <header class="site-header">
+      <div class="nav-shell">
+        <!-- BRAND -->
+
+        <a href="/" class="brand" aria-label="SHUBWORKS — Home">
+          <span class="brand-shub"> SHUB </span>
+
+          <span class="brand-works"> WORKS </span>
+        </a>
+
+        <!-- DESKTOP NAVIGATION -->
+
+        <nav class="primary-nav" aria-label="Primary navigation">
+          <a href="/" class="nav-link active">HOME</a>
+
+          <a href="archive.html" class="nav-link">
+            ARCHIVE
+            <span class="nav-count" id="nav-count"> — </span>
+          </a>
+
+          <a href="archive.html?type=story" class="nav-link"> STORIES </a>
+
+          <a href="archive.html?type=poem" class="nav-link"> POEMS </a>
+
+          <a href="archive.html?type=fable" class="nav-link"> FABLES </a>
+
+          <a href="archive.html?type=novel" class="nav-link"> NOVELS </a>
+
+          <a href="#about" class="nav-link"> ABOUT </a>
+
+          <a href="map.html"> READING MAP </a>
+        </nav>
+
+        <!-- NAVIGATION UTILITY -->
+
+        <div class="nav-utility">
+          <span class="nav-status">
+            <span class="status-dot"></span>
+            ARCHIVE ONLINE
+          </span>
+
+          <button
+            type="button"
+            class="menu-button"
+            id="menu-button"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+            aria-controls="mobile-navigation"
+          >
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- =====================================================
+         MOBILE NAVIGATION
+         ===================================================== -->
+
+    <div class="mobile-navigation" id="mobile-navigation" aria-hidden="true">
+      <div class="mobile-navigation-inner">
+        <div class="mobile-navigation-top">
+          <span> SHUBWORKS </span>
+
+          <span> INDEX / 2026 </span>
+        </div>
+
+        <nav class="mobile-nav-links" aria-label="Mobile navigation">
+          <a href="/">
+            <span>01</span>
+            HOME
+            <b>↗</b>
+          </a>
+
+          <a href="archive.html">
+            <span>02</span>
+            ARCHIVE
+            <b>↗</b>
+          </a>
+
+          <a href="archive.html?type=story">
+            <span>03</span>
+            STORIES
+            <b>↗</b>
+          </a>
+
+          <a href="archive.html?type=poem">
+            <span>04</span>
+            POEMS
+            <b>↗</b>
+          </a>
+
+          <a href="archive.html?type=fable">
+            <span>05</span>
+            FABLES
+            <b>↗</b>
+          </a>
+
+          <a href="archive.html?type=novel">
+            <span>06</span>
+            NOVELS
+            <b>↗</b>
+          </a>
+
+          <a href="#about">
+            <span>07</span>
+            ABOUT
+            <b>↗</b>
+          </a>
+        </nav>
+
+        <div class="mobile-navigation-bottom">
+          <span> THE ARCHIVE IS ALIVE </span>
+
+          <span> SHUBWORKS / 2026 </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- =====================================================
+         MAIN
+         ===================================================== -->
+
+    <main id="main-content">
+      <!-- =================================================
+             HERO
+             ================================================= -->
+
+      <section class="hero">
+        <div class="hero-top">
+          <div class="hero-index">
+            <span>01</span>
+            <span>PERSONAL LITERARY ARCHIVE</span>
+          </div>
+
+          <div class="hero-date">EST. 2026</div>
+        </div>
+
+        <div class="hero-main">
+          <div class="hero-heading">
+            <span class="hero-line"> WORDS </span>
+
+            <span class="hero-line hero-line-offset"> THAT </span>
+
+            <span class="hero-line"> REFUSED </span>
+
+            <span class="hero-line hero-line-outline"> TO DISAPPEAR. </span>
+          </div>
+
+          <div class="hero-aside">
+            <div class="hero-aside-number">001</div>
+
+            <p>
+              A growing collection of stories, poems, fables, novels and
+              fragments — written, kept and remembered.
+            </p>
+
+            <a href="#archive" class="hero-action">
+              <span>ENTER THE ARCHIVE</span>
+              <span>↓</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-bottom">
+          <span> SHUBWORKS </span>
+
+          <span> SCROLL TO EXPLORE </span>
+
+          <span> ↓ </span>
+        </div>
+      </section>
+
+      <!-- =================================================
+             MANIFESTO
+             ================================================= -->
+
+      <section class="manifesto">
+        <div class="section-heading">
+          <div class="section-index">02</div>
+
+          <div class="section-name">THE ARCHIVE</div>
+        </div>
+
+        <div class="manifesto-content">
+          <div class="manifesto-primary">
+            Some things are written to be remembered.
+          </div>
+
+          <div class="manifesto-secondary">
+            Others are written because forgetting them would hurt more.
+          </div>
+
+          <div class="manifesto-description">
+            SHUBWORKS is an evolving personal collection of fiction, poetry,
+            fragments, unfinished ideas and worlds.
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================
+             ARCHIVE
+             ================================================= -->
+
+      <section class="archive-section" id="archive">
+        <div class="section-heading">
+          <div class="section-index">03</div>
+
+          <div class="section-name">EXPLORE</div>
+        </div>
+
+        <div class="archive-header">
+          <div>
+            <span class="archive-kicker"> THE COMPLETE COLLECTION </span>
+
+            <h2>
+              THE
+              <em>ARCHIVE</em>
+            </h2>
+          </div>
+
+          <div class="archive-total-block">
+            <span> TOTAL WORKS </span>
+
+            <strong id="total-works"> — </strong>
+          </div>
+        </div>
+
+        <!-- CATEGORY DIRECTORY -->
+
+        <div class="category-list">
+          <!-- FABLES -->
+
+          <a
+            href="archive.html?type=fable"
+            class="category magnetic"
+            data-category="fable"
+          >
+            <span class="category-index"> 01 </span>
+
+            <div class="category-main">
+              <span class="category-title"> FABLES </span>
+
+              <span class="category-description"> Stories with teeth. </span>
+            </div>
+
+            <span class="category-count" id="fable-count"> — </span>
+
+            <span class="category-arrow"> ↗ </span>
+          </a>
+
+          <!-- POEMS -->
+
+          <a
+            href="archive.html?type=poem"
+            class="category magnetic"
+            data-category="poem"
+          >
+            <span class="category-index"> 02 </span>
+
+            <div class="category-main">
+              <span class="category-title"> POEMS </span>
+
+              <span class="category-description">
+                Small things. Loud feelings.
+              </span>
+            </div>
+
+            <span class="category-count" id="poem-count"> — </span>
+
+            <span class="category-arrow"> ↗ </span>
+          </a>
+
+          <!-- STORIES -->
+
+          <a
+            href="archive.html?type=story"
+            class="category magnetic"
+            data-category="story"
+          >
+            <span class="category-index"> 03 </span>
+
+            <div class="category-main">
+              <span class="category-title"> STORIES </span>
+
+              <span class="category-description">
+                Fiction. Memory. Fragments.
+              </span>
+            </div>
+
+            <span class="category-count" id="story-count"> — </span>
+
+            <span class="category-arrow"> ↗ </span>
+          </a>
+
+          <!-- NOVELS -->
+
+          <a
+            href="archive.html?type=novel"
+            class="category magnetic"
+            data-category="novel"
+          >
+            <span class="category-index"> 04 </span>
+
+            <div class="category-main">
+              <span class="category-title"> NOVELS </span>
+
+              <span class="category-description">
+                Worlds that take longer.
+              </span>
+            </div>
+
+            <span class="category-count" id="novel-count"> — </span>
+
+            <span class="category-arrow"> ↗ </span>
+          </a>
+        </div>
+
+        <div class="archive-footer-link">
+          <span> BROWSE EVERY WORK </span>
+
+          <a href="archive.html">
+            OPEN INDEX
+            <span>↗</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- =================================================
+             STATISTICS — BLACK SECTION
+             ================================================= -->
+
+      <section class="statistics">
+        <div class="section-heading">
+          <div class="section-index">04</div>
+
+          <div class="section-name">THE NUMBERS</div>
+        </div>
+
+        <div class="statistics-intro">
+          <span> A FEW NUMBERS FROM THE ARCHIVE </span>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat">
+            <span class="stat-number" id="stat-words"> 0 </span>
+
+            <span class="stat-label"> WORDS ARCHIVED </span>
+          </div>
+
+          <div class="stat">
+            <span class="stat-number" id="stat-hours"> 0 </span>
+
+            <span class="stat-label"> HOURS OF READING </span>
+          </div>
+
+          <div class="stat">
+            <span class="stat-number" id="stat-works"> 0 </span>
+
+            <span class="stat-label"> WORKS </span>
+          </div>
+        </div>
+
+        <div class="stats-forms-label">
+          <span>BY FORM</span>
+          <span>PUBLIC WORKS ONLY</span>
+        </div>
+
+        <div class="stats-forms">
+          <a class="stats-form" href="archive.html?type=fable">
+            <span class="stats-form-name">FABLES</span>
+            <strong id="stat-fables">0</strong>
+            <span class="stats-form-arrow">↗</span>
+          </a>
+          <a class="stats-form" href="archive.html?type=poem">
+            <span class="stats-form-name">POEMS</span>
+            <strong id="stat-poems">0</strong>
+            <span class="stats-form-arrow">↗</span>
+          </a>
+          <a class="stats-form" href="archive.html?type=story">
+            <span class="stats-form-name">STORIES</span>
+            <strong id="stat-stories">0</strong>
+            <span class="stats-form-arrow">↗</span>
+          </a>
+          <a class="stats-form" href="archive.html?type=novel">
+            <span class="stats-form-name">NOVELS</span>
+            <strong id="stat-novels">0</strong>
+            <span class="stats-form-arrow">↗</span>
+          </a>
+        </div>
+
+        <div class="statistics-bottom">
+          <span> CALCULATED FROM THE CURRENT ARCHIVE / LIVE </span>
+
+          <span> SHUBWORKS / LIVE </span>
+        </div>
+      </section>
+
+      <!-- =================================================
+             RECENTLY ARCHIVED
+             ================================================= -->
+
+      <section class="featured-section">
+        <div class="section-heading">
+          <div class="section-index">05</div>
+
+          <div class="section-name">RECENTLY ARCHIVED</div>
+        </div>
+
+        <div class="featured-header">
+          <h2>
+            NEW
+            <em>ARRIVALS.</em>
+          </h2>
+
+          <p>The latest pieces to enter the archive.</p>
+        </div>
+
+        <div id="featured-list" class="featured-list">
+          <!-- Populated by app.js -->
+        </div>
+
+        <div class="featured-footer">
+          <a href="archive.html" class="text-link">
+            VIEW COMPLETE ARCHIVE
+            <span>↗</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- =================================================
+             ABOUT — BLACK SECTION
+             ================================================= -->
+
+      <section class="about" id="about">
+        <div class="section-heading section-heading-inverted">
+          <div class="section-index">06</div>
+
+          <div class="section-name">ABOUT</div>
+        </div>
+
+        <div class="about-grid">
+          <h2>
+            MADE OF
+            <em>WORDS.</em>
+          </h2>
+
+          <div class="about-copy">
+            <p class="about-text">
+              SHUBWORKS is a living archive of writing — stories, poems, fables,
+              novels and fragments collected over time.
+            </p>
+
+            <p class="about-text about-text-muted">
+              Not everything here was written to be published. Some things
+              simply needed somewhere to exist.
+            </p>
+
+            <div class="about-signature">
+              <span> SHUBWORKS </span>
+
+              <span> EST. 2026 </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================
+             FOOTER
+             ================================================= -->
+
+      <footer class="site-footer">
+        <div class="footer-main">
+          <div class="footer-brand">
+            <a href="/" class="brand footer-logo" aria-label="SHUBWORKS home">
+              <span class="brand-shub"> SHUB </span>
+
+              <span class="brand-works"> WORKS </span>
+            </a>
+          </div>
+
+          <div class="footer-message">
+            <span> KEEP READING. </span>
+
+            <span> KEEP WRITING. </span>
+          </div>
+
+          <a href="#main-content" class="back-top">
+            BACK TO TOP
+            <span>↑</span>
+          </a>
+        </div>
+
+        <div class="footer-bottom">
+          <span> © 2026 SHUBWORKS </span>
+
+          <span> THE ARCHIVE IS ALIVE </span>
+
+          <span> PERSONAL LITERARY ARCHIVE </span>
+        </div>
+      </footer>
+    </main>
+
+    <!-- =====================================================
+         APPLICATION JAVASCRIPT
+         ===================================================== -->
+
+    <script src="js/api.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

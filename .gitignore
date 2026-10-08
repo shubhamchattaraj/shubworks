@@ -1,0 +1,16 @@
+node_modules/
+.env
+.env.*
+!.env.example
+npm-debug.log*
+*.log
+.DS_Store
+Thumbs.db
+
+# Private literary source content
+content/*.md
+data/*.json
+
+# Generated/private deployment data
+archive-data/
+shubworks-netlify/
